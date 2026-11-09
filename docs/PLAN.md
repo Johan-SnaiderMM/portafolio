@@ -11,8 +11,8 @@
 | Contacto | Formulario con **Resend** (correo gratis); el correo de Johan va solo en una variable de entorno, no se publica |
 | Proyectos destacados | Los 5: Mesa de ayuda TI, Red neuronal desde cero, Clasificador de hojas de banano, Orígenes y Comanda |
 | Nombre en la página | **Johan Moreno** (sin «Snaider»; «La ficha» no aparece) |
-| Repositorio | **Privado hasta el lanzamiento** (decisión mía, Johan dijo «como lo veas mejor»); se hace público en la fase 8 |
-| Dirección | `*.vercel.app` (cuesta $0); el dominio propio queda como opción futura |
+| Repositorio | **Privado hasta el lanzamiento** (decisión mía, Johan dijo «como lo veas mejor» y autorizó crearlo el 9-nov): `Johan-SnaiderMM/portafolio`; se hace público en la fase 8 |
+| Dirección | https://johan-moreno.vercel.app (proyecto de Vercel `johan-moreno`, $0); el dominio propio queda como opción futura |
 | Agente | API gratuita (Groq con Gemini de respaldo), con límites; sin pagar nada |
 
 ## Dirección visual: «fósforo ámbar»
@@ -59,7 +59,7 @@ Secundarios (lista corta): Polo Air Cool (en uso real), Barberías, Servitecas, 
 | Fase | Entregable | Cómo sabemos que está listo | Estado |
 |---|---|---|---|
 | 0. Ajustes | Plan cerrado | Johan respondió las 6 preguntas | **Hecha** |
-| 1. Esqueleto | Proyecto Next.js, tema fósforo ámbar, navegación, secciones con textos reales, español/inglés, despliegue de prueba | Se ve bien en escritorio y celular; URL pública de vista previa; lint, tipos, pruebas y build en verde | En curso |
+| 1. Esqueleto | Proyecto Next.js, tema fósforo ámbar, navegación, secciones con textos reales, español/inglés, despliegue de prueba | Se ve bien en escritorio y celular; URL pública de vista previa; lint, tipos, pruebas y build en verde | **Hecha** (9-nov): 15 pruebas, lint, tipos y build en verde; revisada a 1280 px y 390 px; menú móvil y redirección de idioma probados. En línea en https://johan-moreno.vercel.app (sin indexar), repositorio privado `Johan-SnaiderMM/portafolio` y despliegue automático en cada push a `main`. |
 | 2. Portada 3D | Red neuronal interactiva + narración con el scroll + alternativa estática | 60 fps en el computador de Johan y buen rendimiento en un celular de gama baja | |
 | 3. Proyectos | 5 destacados + lista, portadas nuevas, páginas de detalle cortas | Todos los enlaces funcionan | |
 | 4. Laboratorio | Dibujar un dígito → predicción; 4b: hojas de banano con carga diferida | Prueba de paridad JS vs. NumPy | |

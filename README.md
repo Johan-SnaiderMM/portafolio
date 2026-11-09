@@ -2,7 +2,13 @@
 
 Sitio personal con proyectos, laboratorio de IA, un asistente y contacto. Oscuro, técnico y minimalista («fósforo ámbar»), en español e inglés.
 
-> **Estado:** fase 1 de 8 (esqueleto). El plan completo, las decisiones y el estado de cada fase están en [`docs/PLAN.md`](docs/PLAN.md).
+> **Estado:** fase 1 de 8 hecha (esqueleto). En línea, sin indexar: https://johan-moreno.vercel.app. El plan completo, las decisiones y el estado de cada fase están en [`docs/PLAN.md`](docs/PLAN.md).
+
+## Despliegue
+
+- Repositorio **privado** `Johan-SnaiderMM/portafolio`; cada push a `main` despliega solo en Vercel (proyecto `johan-moreno`, equipo `johan-moreno-s-projects`, Node 24, Vercel Authentication apagada para que la vista previa sea pública).
+- Mientras `SITE_INDEXABLE` no sea `true`, todas las páginas llevan `noindex, nofollow`.
+- **Al lanzar (fase 8):** poner `SITE_INDEXABLE=true` en las variables de Vercel (producción), hacer público el repositorio y revisar el enlace en LinkedIn, GitHub y el CV.
 
 ## Cómo correrlo
 
