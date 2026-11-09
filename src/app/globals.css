@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+/*
+ * «Fósforo ámbar»: negro cálido, texto hueso y un solo color vivo.
+ * Ver docs/PLAN.md para la dirección visual completa.
+ */
+@theme {
+  --color-tinta: #0b0a08;
+  --color-hollin: #13110e;
+  --color-trazo: #2a261f;
+  --color-ceniza: #8c8576;
+  --color-hueso: #ece7da;
+  --color-ambar: #ffb020;
+}
+
+@theme inline {
+  --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-martian), ui-monospace, "Cascadia Mono", monospace;
+}
+
+html {
+  background: var(--color-tinta);
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  scroll-padding-top: 4.5rem;
+}
+
+body {
+  background: var(--color-tinta);
+  color: var(--color-hueso);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-ambar);
+  color: var(--color-tinta);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ambar);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Entrada de la portada: una sola secuencia, escalonada con --i. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+/* Aparición al hacer scroll; sin soporte del navegador, todo queda visible. */
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 5% entry 40%;
+  }
+}
+
+/* Pulso que recorre el camino activo de la red de la portada. */
+@keyframes travel {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+.net-pulse {
+  stroke-dasharray: 7 93;
+  animation: travel 5s linear infinite;
+  filter: drop-shadow(0 0 5px rgb(255 176 32 / 0.6));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .rise,
+  .reveal {
+    animation: none;
+  }
+
+  .net-pulse {
+    animation: none;
+    stroke-dasharray: none;
+  }
+}
