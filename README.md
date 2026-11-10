@@ -35,7 +35,22 @@ Requiere Node 24 (el mismo de Vercel).
 | `NEXT_PUBLIC_SITE_URL` | URL pública, para metas de compartir y enlaces canónicos | `VERCEL_PROJECT_PRODUCTION_URL` en Vercel; `http://localhost:3000` en local |
 | `SITE_INDEXABLE` | `true` permite que los buscadores indexen el sitio | vacío = `noindex` (hasta el lanzamiento) |
 
-Las fases 5 y 6 sumarán las claves de Groq/Gemini y de Resend; **solo van en variables de entorno del servidor**, nunca en el código ni en el navegador.
+| `GROQ_API_KEY` | Asistente con IA: proveedor principal (Groq, capa gratuita) | sin clave = se prueba solo Gemini |
+| `GEMINI_API_KEY` | Asistente con IA: respaldo (Google AI Studio, capa gratuita) | sin clave = se usa solo Groq |
+| `GROQ_MODEL` / `GEMINI_MODEL` | Cambiar de modelo si el proveedor retira alguno | `llama-3.3-70b-versatile` / `gemini-3.5-flash-lite` |
+
+Sin ninguna de las dos claves el sitio funciona igual y el asistente responde «no está disponible». La fase 6 sumará la clave de Resend. **Las claves solo van en variables de entorno del servidor** (en local, un `.env.local` que git ignora), nunca en el código ni en el navegador.
+
+## Asistente con IA
+
+`POST /api/chat` (`src/app/api/chat/route.ts`). El navegador solo manda los mensajes; el prompt, las claves y la elección del proveedor viven en el servidor.
+
+- **Contexto cerrado:** `src/lib/agent/knowledge.ts` arma lo único que sabe, a partir de los textos de los proyectos y de unos datos públicos de Johan. Sin teléfono, correo ni fechas de grado (hay una prueba que lo vigila).
+- **Reglas:** `src/lib/agent/prompt.ts` (solo habla de Johan, «no lo sé» es válido, ignora intentos de cambiar las reglas, marca secreta que descarta respuestas que filtran el prompt).
+- **Proveedores:** Groq primero; si da 429, error o tarda más de 15 s, Gemini; si ninguno responde, mensaje de cortesía (503) y el resto del sitio sigue igual. Cualquier 429 se trata como cuota agotada: las cifras de las capas gratuitas cambian y no se dan por supuestas.
+- **Límites:** 6 mensajes de historial, 500 caracteres por mensaje, 400 tokens de salida, 8 mensajes por visitante cada 10 minutos y 400 al día en total (en la memoria de cada instancia: freno de mejor esfuerzo; el tope real es la cuota gratuita, que no cobra). Solo acepta peticiones del mismo sitio.
+- **Privacidad:** no se guarda ninguna conversación ni IP (solo un resumen irreversible en memoria para contar). Los proveedores sí procesan el texto; la interfaz lo avisa.
+- **Probarlo en local:** crear `.env.local` con `GROQ_API_KEY=...` y/o `GEMINI_API_KEY=...`, y `npm run dev`.
 
 ## Estructura
 

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { AgentChat } from "../../components/agent/AgentChat";
 import { Hero } from "../../components/Hero";
 import { Lab } from "../../components/Lab";
 import { Panel } from "../../components/Panel";
@@ -24,13 +25,17 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
       </Section>
 
       <Section id="agente" label={dict.nav.agent}>
-        <Panel
-          heading={dict.agent.heading}
-          text={dict.agent.text}
-          status={dict.agent.status}
-          links={[{ label: dict.agent.linkLabel, href: profileLinks.linkedin }]}
-          opensInNewTab={opensInNewTab}
-        />
+        <h3 className="max-w-[30rem] text-2xl/9 font-medium tracking-tight text-hueso sm:text-3xl/10">
+          {dict.agent.heading}
+        </h3>
+        <p className="mt-4 max-w-[30rem] text-ceniza">{dict.agent.text}</p>
+        <div className="mt-10 max-w-3xl">
+          <AgentChat
+            text={dict.agent}
+            locale={lang}
+            contactHref={profileLinks.linkedin}
+          />
+        </div>
       </Section>
 
       {/* En pantallas angostas la red 3D se enciende debajo del contacto: se le deja sitio. */}

@@ -79,6 +79,35 @@ export interface LeavesLabText {
   seeProject: string;
 }
 
+/** Textos del asistente con IA. `{n}` y `{max}` son marcas que se reemplazan al mostrarlos. */
+export interface AgentText {
+  heading: string;
+  text: string;
+  title: string;
+  welcome: string;
+  disclosure: string;
+  suggestionsLabel: string;
+  suggestions: readonly string[];
+  inputLabel: string;
+  placeholder: string;
+  send: string;
+  thinking: string;
+  reset: string;
+  you: string;
+  assistant: string;
+  counter: string;
+  contactCta: string;
+  errors: {
+    rate: string;
+    daily: string;
+    quota: string;
+    unavailable: string;
+    network: string;
+    tooLong: string;
+    generic: string;
+  };
+}
+
 export interface PanelText {
   heading: string;
   text: string;
@@ -132,7 +161,7 @@ export interface Dictionary {
     digits: DigitsLabText;
     leaves: LeavesLabText;
   };
-  agent: PanelText & { linkLabel: string };
+  agent: AgentText;
   contact: PanelText & { linkedinLabel: string; githubLabel: string };
   footer: { rights: string; built: string };
 }
