@@ -1,14 +1,14 @@
 # Portafolio de Johan Moreno
 
-Sitio personal con proyectos, laboratorio de IA, un asistente y contacto. Oscuro, técnico y minimalista («fósforo ámbar»), en español e inglés.
+Sitio personal con proyectos medidos, un laboratorio donde dos modelos de IA corren en el navegador, un asistente con IA, un formulario de contacto «como ticket» y una versión rápida solo texto. Oscuro, técnico y minimalista («fósforo ámbar»), en español e inglés.
 
-> **Estado:** fase 1 de 8 hecha (esqueleto). En línea, sin indexar: https://johan-moreno.vercel.app. El plan completo, las decisiones y el estado de cada fase están en [`docs/PLAN.md`](docs/PLAN.md).
+**En línea:** https://johan-moreno.vercel.app · plan, decisiones y estado de cada fase en [`docs/PLAN.md`](docs/PLAN.md).
 
 ## Despliegue
 
-- Repositorio **privado** `Johan-SnaiderMM/portafolio`; cada push a `main` despliega solo en Vercel (proyecto `johan-moreno`, equipo `johan-moreno-s-projects`, Node 24, Vercel Authentication apagada para que la vista previa sea pública).
-- Mientras `SITE_INDEXABLE` no sea `true`, todas las páginas llevan `noindex, nofollow`.
-- **Al lanzar (fase 8):** poner `SITE_INDEXABLE=true` en las variables de Vercel (producción), hacer público el repositorio y revisar el enlace en LinkedIn, GitHub y el CV.
+- Cada push a `main` despliega solo en Vercel (proyecto `johan-moreno`, Node 24).
+- El sitio solo se deja indexar con `SITE_INDEXABLE=true` (`robots.txt` y la meta `robots` salen cerrados si no).
+- Las claves (Groq, Gemini, Resend) y el correo que recibe los tickets viven solo en variables de entorno de Vercel; no están en el repositorio ni en su historial.
 
 ## Cómo correrlo
 
@@ -34,15 +34,15 @@ Requiere Node 24 (el mismo de Vercel).
 | Variable | Para qué | Por defecto |
 |---|---|---|
 | `NEXT_PUBLIC_SITE_URL` | URL pública, para metas de compartir y enlaces canónicos | `VERCEL_PROJECT_PRODUCTION_URL` en Vercel; `http://localhost:3000` en local |
-| `SITE_INDEXABLE` | `true` permite que los buscadores indexen el sitio | vacío = `noindex` (hasta el lanzamiento) |
-
+| `SITE_INDEXABLE` | `true` permite que los buscadores indexen el sitio | vacío = `noindex` y `robots.txt` cerrado |
 | `GROQ_API_KEY` | Asistente con IA: proveedor principal (Groq, capa gratuita) | sin clave = se prueba solo Gemini |
 | `GEMINI_API_KEY` | Asistente con IA: respaldo (Google AI Studio, capa gratuita) | sin clave = se usa solo Groq |
 | `GROQ_MODEL` / `GEMINI_MODEL` | Cambiar de modelo si el proveedor retira alguno | `llama-3.3-70b-versatile` / `gemini-3.5-flash-lite` |
-
-Sin ninguna de las dos claves el sitio funciona igual y el asistente responde «no está disponible». | `RESEND_API_KEY` | Contacto: envío del ticket por correo (Resend, plan gratuito) | sin clave = el formulario responde «no disponible» |
+| `RESEND_API_KEY` | Contacto: envío del ticket por correo (Resend, plan gratuito) | sin clave = el formulario responde «no disponible» |
 | `CONTACT_TO_EMAIL` | Contacto: correo que recibe los tickets (no se publica) | — |
 | `CONTACT_FROM` | Contacto: remitente | `Portafolio <onboarding@resend.dev>` (sin dominio propio, Resend solo entrega al correo de la cuenta) |
+
+Sin ninguna de las claves el sitio funciona igual: el asistente y el formulario responden «no disponible».
 
 **Las claves solo van en variables de entorno del servidor** (en local, un `.env.local` que git ignora), nunca en el código ni en el navegador.
 
@@ -65,12 +65,17 @@ Sin ninguna de las dos claves el sitio funciona igual y el asistente responde «
 
 ```
 src/
-  app/[lang]/        layout raíz (html lang) y página; /es y /en
+  app/[lang]/        layout raíz (html lang), portada, detalle de proyectos y versión rápida; /es y /en
+  app/api/           /api/chat (asistente) y /api/contact (tickets)
   app/globals.css    tema (colores, animaciones) en Tailwind 4
   components/        Header, Hero, Projects, NetworkDiagram, etc.
   components/network/  fondo 3D: escena de Three.js, shaders y carga diferida
   content/projects.ts  datos de proyectos que no dependen del idioma (enlaces, stack)
   i18n/              diccionarios es/en tipados, idioma por defecto y negociación
+  components/lab/    las dos demos del laboratorio (dígitos y hojas de banano)
+  lib/lab/           redes de inferencia en TypeScript con pruebas de paridad contra NumPy y PyTorch
+  lib/agent/         conocimiento, prompt, límites y proveedores del asistente
+  lib/contact/       validación y envío de tickets
   lib/network/       lógica pura de la red 3D: diseño, colocación según el scroll, capacidad, control de rendimiento
   proxy.ts           redirige «/» a /es o /en según Accept-Language
 scripts/probar-navegador.mjs  prueba el sitio en Chrome/Edge sin cabeza (capturas, consola, cuadros por segundo);
@@ -98,7 +103,6 @@ Un fondo fijo con una red neuronal de puntos y líneas ámbar (Three.js directo,
 - **Idiomas por ruta (`/es`, `/en`).** Los textos viven en `src/i18n/es.ts` y `en.ts`; `Dictionary` obliga a que tengan las mismas claves y una prueba lo comprueba. Las cifras medidas usan el formato de cada idioma (`98,1 %` / `98.1%`).
 - **Datos de proyectos separados de los textos.** Enlaces y tecnologías están en `src/content/projects.ts`; agregar un proyecto sin texto en los dos idiomas no compila.
 - **Animación con CSS.** La entrada de la portada y la aparición al hacer scroll usan CSS (`animation-timeline: view()` donde existe); si el navegador no lo soporta, todo queda visible. `prefers-reduced-motion` las apaga.
-- **Sin firma de Claude en los commits** (pedido de Johan).
 
 ## Diseño
 

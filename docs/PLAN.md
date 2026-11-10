@@ -11,7 +11,7 @@
 | Contacto | Formulario con **Resend** (correo gratis); el correo de Johan va solo en una variable de entorno, no se publica |
 | Proyectos destacados | Los 5: Mesa de ayuda TI, Red neuronal desde cero, Clasificador de hojas de banano, Orígenes y Comanda |
 | Nombre en la página | **Johan Moreno** (sin «Snaider»; «La ficha» no aparece) |
-| Repositorio | **Privado hasta el lanzamiento** (decisión mía, Johan dijo «como lo veas mejor» y autorizó crearlo el 9-nov): `Johan-SnaiderMM/portafolio`; se hace público en la fase 8 |
+| Repositorio | Privado durante la construcción; público en el lanzamiento (fase 8): `Johan-SnaiderMM/portafolio` |
 | Dirección | https://johan-moreno.vercel.app (proyecto de Vercel `johan-moreno`, $0); el dominio propio queda como opción futura |
 | Agente | API gratuita (Groq con Gemini de respaldo), con límites; sin pagar nada |
 
