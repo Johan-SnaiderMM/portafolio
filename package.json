@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/copiar-wasm.mjs && next build",
+    "postinstall": "node scripts/copiar-wasm.mjs",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
@@ -16,6 +17,7 @@
   },
   "dependencies": {
     "next": "16.4.6",
+    "onnxruntime-web": "^1.31.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "three": "^0.187.0"

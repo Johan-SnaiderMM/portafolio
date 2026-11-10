@@ -1,4 +1,5 @@
 import type { FeaturedId, OtherId } from "../content/projects";
+import type { Clase } from "../lib/lab/hojas/clases";
 
 export interface FeaturedText {
   name: string;
@@ -18,6 +19,64 @@ export interface FeaturedText {
 export interface OtherText {
   name: string;
   description: string;
+}
+
+/** Textos del laboratorio de dígitos. `{n}`, `{list}`… son marcas que se reemplazan al mostrarlos. */
+export interface DigitsLabText {
+  title: string;
+  kicker: string;
+  intro: string;
+  help: string;
+  canvasLabel: string;
+  clear: string;
+  loading: string;
+  loadError: string;
+  empty: string;
+  readsOne: string;
+  readsMany: string;
+  glued: string;
+  doubtOne: string;
+  doubtMany: string;
+  detectedLabel: string;
+  digitN: string;
+  unreliable: string;
+  gluedBox: string;
+  probsTitle: string;
+  probsHint: string;
+  probsLabel: string;
+  how: string;
+  model: string;
+  privacy: string;
+  seeProject: string;
+}
+
+/** Textos del laboratorio de hojas de banano. `{n}`, `{pct}`… son marcas que se reemplazan al mostrarlos. */
+export interface LeavesLabText {
+  title: string;
+  kicker: string;
+  intro: string;
+  takePhoto: string;
+  pickImage: string;
+  placeholder: string;
+  canvasLabel: string;
+  examplesHint: string;
+  downloadNote: string;
+  idle: string;
+  preparing: string;
+  analyzing: string;
+  errorImage: string;
+  errorExample: string;
+  errorAnalyze: string;
+  thinksIt: string;
+  lowConfidence: string;
+  probsLabel: string;
+  privacy: string;
+  classes: Record<Clase, { name: string; short: string; description: string }>;
+  model: string;
+  limitsTitle: string;
+  limits: readonly string[];
+  credit: string;
+  seeProject: string;
 }
 
 export interface PanelText {
@@ -67,7 +126,12 @@ export interface Dictionary {
     otherTitle: string;
     other: Record<OtherId, OtherText>;
   };
-  lab: PanelText & { linkLabel: string };
+  lab: {
+    heading: string;
+    text: string;
+    digits: DigitsLabText;
+    leaves: LeavesLabText;
+  };
   agent: PanelText & { linkLabel: string };
   contact: PanelText & { linkedinLabel: string; githubLabel: string };
   footer: { rights: string; built: string };

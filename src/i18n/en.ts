@@ -163,10 +163,103 @@ export const en = {
     },
   },
   lab: {
-    heading: "Draw a digit and see how the network reads it.",
-    text: "Soon you'll be able to try the neural network I wrote with NumPy right here, in your browser: your drawing never leaves your device.",
-    status: "Under construction",
-    linkLabel: "Try the full demo",
+    heading: "Try the models: they run in your browser.",
+    text: "A neural network written with NumPy and a banana-leaf classifier. Your drawings and photos stay on your device.",
+    digits: {
+      title: "Neural network from scratch",
+      kicker: "NumPy · backpropagation by hand · runs in your browser",
+      intro:
+        "Write a number with one or several digits. The network was trained without PyTorch or TensorFlow and reads it one digit at a time.",
+      help: "Write with your finger or the mouse: one digit or several, kept apart (about 6 fit; about 4 on a phone). The network reads when you pause.",
+      canvasLabel: "Canvas to write a number",
+      clear: "Clear",
+      loading: "Loading the neural network…",
+      loadError: "I couldn't load the model. Reload the page to try again.",
+      empty: "Nothing drawn yet.",
+      readsOne: "The network thinks it's a",
+      readsMany: "The network reads the number",
+      glued:
+        "Some digits seem to be touching. Pull them apart a little: the network reads one digit at a time.",
+      doubtOne:
+        "The network isn't very sure about digit {list}: try a bigger, clearer stroke.",
+      doubtMany:
+        "The network isn't very sure about digits {list}: try a bigger, clearer stroke.",
+      detectedLabel: "Detected digits",
+      digitN: "Digit {n}",
+      unreliable: "unreliable",
+      gluedBox:
+        "This box seems to hold more than one digit, so no probabilities are shown: the network can only read one.",
+      probsTitle: "Probability of each digit for digit {n}",
+      probsHint: "(tap another tile to switch)",
+      probsLabel: "Probability of each digit",
+      how: "Each box is a digit the network found: it is cropped, shrunk to 28×28 pixels and centred, just like the images it was trained on (the thumbnails). Below {pct} confidence, the network says it doubts.",
+      model:
+        "Network {arch} · {params} parameters · {acc} accuracy on the 10,000 MNIST test images (a single isolated digit).",
+      privacy: "Your drawing never leaves your device.",
+      seeProject: "See the project",
+    },
+    leaves: {
+      title: "Banana leaves: disease detector",
+      kicker: "PyTorch · MobileNetV2 · ONNX · runs in your browser",
+      intro:
+        "A photo of a banana leaf and a computer-vision model tells you whether it looks healthy or shows Sigatoka, Cordana or Pestalotiopsis. It comes from my interest in Urabá, a banana-growing region.",
+      takePhoto: "Take photo",
+      pickImage: "Choose image",
+      placeholder: "Upload or take a close-up photo of a banana leaf.",
+      canvasLabel: "Photo the model analyses, cropped to a square",
+      examplesHint: "No leaf at hand? Try an example photo:",
+      downloadNote:
+        "The first time you analyse a photo, about 24 MB are downloaded (the model and WebAssembly). Nothing is downloaded before that.",
+      idle: "The result will appear here. Your photo never leaves your device.",
+      preparing: "Preparing the model (≈ 24 MB, first time only)…",
+      analyzing: "Analysing the leaf…",
+      errorImage: "I couldn't prepare the image.",
+      errorExample: "I couldn't load the example photo.",
+      errorAnalyze: "I couldn't analyse the image.",
+      thinksIt: "The model thinks it is:",
+      lowConfidence:
+        "Low confidence ({pct}): try another photo, close up, in good light, with the leaf filling the frame.",
+      probsLabel: "Probability of each class",
+      privacy: "Your photo never leaves your device.",
+      classes: {
+        cordana: {
+          name: "Cordana (leaf spot)",
+          short: "Cordana",
+          description:
+            "Leaf spot caused by the Cordana fungus: oval lesions with a brown centre, often with a yellow halo.",
+        },
+        sana: {
+          name: "Healthy leaf",
+          short: "Healthy leaf",
+          description:
+            "None of the spots of the three diseases the model knows are visible.",
+        },
+        pestalotiopsis: {
+          name: "Pestalotiopsis (leaf blight)",
+          short: "Pestalotiopsis",
+          description:
+            "Leaf blight caused by fungi of the Pestalotiopsis genus: dry, irregular lesions that spread across the leaf.",
+        },
+        sigatoka: {
+          name: "Sigatoka",
+          short: "Sigatoka",
+          description:
+            "Leaf disease caused by fungi (Pseudocercospora): dark streaks and spots that gradually dry the leaf.",
+        },
+      },
+      model:
+        "{acc} accuracy on {n} test photos the model never saw (95% confidence interval: {low}–{high}) · macro F1 {f1} · {params} M parameters.",
+      limitsTitle: "Limits: read them before trusting the result",
+      limits: [
+        "It was trained on banana-leaf photos taken in Bangladesh (BananaLSD). It has not been validated on photos from Urabá or Colombia: other varieties, climates and cameras can lower accuracy.",
+        "It only knows three diseases and the healthy leaf. If the photo isn't a banana leaf, it will still answer with one of the four.",
+        "The test set is small ({n} photos), which is why the interval is wide. It is an estimate, not a guarantee.",
+        "It is an educational tool: it does not replace the diagnosis of an agricultural technician.",
+      ],
+      credit:
+        "Photos and labels: BananaLSD, Arman et al. (2023), Mendeley Data, CC BY 4.0 licence. The example photos come from that set.",
+      seeProject: "See the project",
+    },
   },
   agent: {
     heading: "Ask my AI assistant.",

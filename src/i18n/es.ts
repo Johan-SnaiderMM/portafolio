@@ -163,10 +163,103 @@ export const es = {
     },
   },
   lab: {
-    heading: "Dibuja un dígito y mira cómo lo lee la red.",
-    text: "Pronto podrás probar aquí la red neuronal que escribí con NumPy, directamente en tu navegador: tu dibujo no sale de tu dispositivo.",
-    status: "En construcción",
-    linkLabel: "Probar la demo completa",
+    heading: "Prueba los modelos: corren en tu navegador.",
+    text: "Una red neuronal escrita con NumPy y un clasificador de hojas de banano. Tus dibujos y tus fotos se quedan en tu dispositivo.",
+    digits: {
+      title: "Red neuronal desde cero",
+      kicker: "NumPy · retropropagación a mano · corre en tu navegador",
+      intro:
+        "Escribe un número de uno o de varios dígitos. La red se entrenó sin PyTorch ni TensorFlow y lo lee dígito por dígito.",
+      help: "Escribe con el dedo o el mouse: un dígito o varios, separados entre sí (hasta unos 6; en celular caben unos 4). La red lee cuando haces una pausa.",
+      canvasLabel: "Lienzo para escribir un número",
+      clear: "Borrar",
+      loading: "Cargando la red neuronal…",
+      loadError: "No pude cargar el modelo. Recarga la página para intentarlo de nuevo.",
+      empty: "Todavía no hay dibujo.",
+      readsOne: "La red cree que es un",
+      readsMany: "La red lee el número",
+      glued:
+        "Parece que hay dígitos pegados. Sepáralos un poco: la red solo lee un dígito a la vez.",
+      doubtOne:
+        "La red no está muy segura del dígito {list}: prueba con un trazo más grande y claro.",
+      doubtMany:
+        "La red no está muy segura de los dígitos {list}: prueba con un trazo más grande y claro.",
+      detectedLabel: "Dígitos detectados",
+      digitN: "Dígito {n}",
+      unreliable: "no fiable",
+      gluedBox:
+        "Este recuadro parece tener más de un dígito, así que no se muestran probabilidades: la red solo sabe leer uno.",
+      probsTitle: "Probabilidad de cada dígito para el dígito {n}",
+      probsHint: "(toca otra ficha para cambiar)",
+      probsLabel: "Probabilidad de cada dígito",
+      how: "Cada recuadro es un dígito que encontró la red: se recorta, se reduce a 28×28 píxeles y se centra, igual que las imágenes con las que se entrenó (las miniaturas). Por debajo de {pct} de seguridad, la red avisa que duda.",
+      model:
+        "Red {arch} · {params} parámetros · {acc} de acierto en las 10 000 imágenes de prueba de MNIST (un dígito aislado).",
+      privacy: "Tu dibujo no sale de tu dispositivo.",
+      seeProject: "Ver el proyecto",
+    },
+    leaves: {
+      title: "Hojas de banano: detector de enfermedades",
+      kicker: "PyTorch · MobileNetV2 · ONNX · corre en tu navegador",
+      intro:
+        "Una foto de una hoja de banano y un modelo de visión por computador te dice si parece sana o con Sigatoka, Cordana o Pestalotiopsis. Nace de mi interés por Urabá, zona bananera.",
+      takePhoto: "Tomar foto",
+      pickImage: "Elegir imagen",
+      placeholder: "Sube o toma una foto de cerca de una hoja de banano.",
+      canvasLabel: "Foto que analiza el modelo, recortada en cuadrado",
+      examplesHint: "¿No tienes una hoja a la mano? Prueba con una foto de ejemplo:",
+      downloadNote:
+        "La primera vez que analices una foto se descargan unos 24 MB (el modelo y WebAssembly). Antes de eso no se descarga nada.",
+      idle: "El resultado aparecerá aquí. La foto no sale de tu dispositivo.",
+      preparing: "Preparando el modelo (≈ 24 MB, solo la primera vez)…",
+      analyzing: "Analizando la hoja…",
+      errorImage: "No pude preparar la imagen.",
+      errorExample: "No pude cargar la foto de ejemplo.",
+      errorAnalyze: "No pude analizar la imagen.",
+      thinksIt: "El modelo cree que es:",
+      lowConfidence:
+        "Seguridad baja ({pct}): prueba con otra foto, de cerca, con buena luz y la hoja ocupando el cuadro.",
+      probsLabel: "Probabilidad de cada clase",
+      privacy: "Tu foto no sale de tu dispositivo.",
+      classes: {
+        cordana: {
+          name: "Cordana (mancha foliar)",
+          short: "Cordana",
+          description:
+            "Mancha de la hoja causada por el hongo Cordana: lesiones ovaladas de centro pardo, a menudo con un halo amarillo.",
+        },
+        sana: {
+          name: "Hoja sana",
+          short: "Hoja sana",
+          description:
+            "No se ven las manchas de las tres enfermedades que conoce el modelo.",
+        },
+        pestalotiopsis: {
+          name: "Pestalotiopsis (tizón foliar)",
+          short: "Pestalotiopsis",
+          description:
+            "Tizón de la hoja causado por hongos del género Pestalotiopsis: lesiones secas e irregulares que van avanzando sobre la hoja.",
+        },
+        sigatoka: {
+          name: "Sigatoka",
+          short: "Sigatoka",
+          description:
+            "Enfermedad foliar causada por hongos (Pseudocercospora): rayas y manchas oscuras que van secando la hoja.",
+        },
+      },
+      model:
+        "{acc} de acierto en {n} fotos de prueba que el modelo nunca vio (intervalo de confianza 95 %: {low}–{high}) · F1 macro {f1} · {params} M de parámetros.",
+      limitsTitle: "Límites: léelos antes de confiar en el resultado",
+      limits: [
+        "Se entrenó con fotos de hojas de banano tomadas en Bangladesh (BananaLSD). No se ha validado con fotos de Urabá ni de Colombia: otras variedades, climas y cámaras pueden bajar la precisión.",
+        "Solo conoce tres enfermedades y la hoja sana. Si la foto no es de una hoja de banano, igual responderá con una de las cuatro.",
+        "El conjunto de prueba es pequeño ({n} fotos): por eso el intervalo es ancho. Es una estimación, no una garantía.",
+        "Es una herramienta educativa: no sustituye el diagnóstico de un técnico agropecuario.",
+      ],
+      credit:
+        "Fotos y etiquetas: BananaLSD, Arman et al. (2023), Mendeley Data, licencia CC BY 4.0. Las fotos de ejemplo salen de ese conjunto.",
+      seeProject: "Ver el proyecto",
+    },
   },
   agent: {
     heading: "Pregúntale a mi asistente con IA.",

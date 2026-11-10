@@ -10,4 +10,4 @@ export function getDictionary(locale: Locale): Dictionary {
 }
 
 export { defaultLocale, hasLocale, locales, type Locale } from "./locales";
-export type { Dictionary } from "./types";
+export type { Dictionary, DigitsLabText, LeavesLabText } from "./types";

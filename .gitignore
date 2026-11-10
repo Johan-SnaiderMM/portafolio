@@ -45,3 +45,6 @@ next-env.d.ts
 
 # Capturas de las pruebas con navegador (scripts/probar-navegador.mjs)
 capturas/
+
+# WebAssembly de onnxruntime-web: lo copia scripts/copiar-wasm.mjs (postinstall y build)
+public/lab/ort/

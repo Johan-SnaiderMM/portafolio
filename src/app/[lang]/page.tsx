@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
 import { Hero } from "../../components/Hero";
+import { Lab } from "../../components/Lab";
 import { Panel } from "../../components/Panel";
 import { Projects } from "../../components/Projects";
 import { Section } from "../../components/Section";
-import { labDemoUrl, profileLinks } from "../../content/projects";
+import { profileLinks } from "../../content/projects";
 import { getDictionary, hasLocale } from "../../i18n";
 
 export default async function HomePage({ params }: PageProps<"/[lang]">) {
@@ -19,13 +20,7 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
       <Projects dict={dict} locale={lang} />
 
       <Section id="laboratorio" label={dict.nav.lab}>
-        <Panel
-          heading={dict.lab.heading}
-          text={dict.lab.text}
-          status={dict.lab.status}
-          links={[{ label: dict.lab.linkLabel, href: labDemoUrl }]}
-          opensInNewTab={opensInNewTab}
-        />
+        <Lab dict={dict} locale={lang} />
       </Section>
 
       <Section id="agente" label={dict.nav.agent}>

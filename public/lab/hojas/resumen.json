@@ -1,0 +1,23 @@
+{
+  "clases": [
+    "cordana",
+    "sana",
+    "pestalotiopsis",
+    "sigatoka"
+  ],
+  "entrada": [
+    1,
+    3,
+    224,
+    224
+  ],
+  "precision_prueba": 0.9851,
+  "precision_prueba_ic95": [
+    0.9627,
+    1.0
+  ],
+  "f1_macro_prueba": 0.9805,
+  "fotos_de_prueba": 134,
+  "parametros": 2228996,
+  "dataset": "BananaLSD, conjunto original (937 fotos): Arman et al. 2023, doi:10.17632/9tb7k297ff.1 (CC BY 4.0)"
+}
