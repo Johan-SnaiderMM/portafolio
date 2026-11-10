@@ -40,6 +40,10 @@ describe("prompt del sistema", () => {
     expect(prompt).toContain(CANARY);
   });
 
+  it("recuerda al final responder en el idioma del usuario", () => {
+    expect(buildSystemPrompt("es").trimEnd().endsWith("responde en inglés).")).toBe(true);
+  });
+
   it("usa el idioma de la página como respaldo", () => {
     expect(buildSystemPrompt("en")).toContain("en inglés");
     expect(buildSystemPrompt("es")).toContain("en español");

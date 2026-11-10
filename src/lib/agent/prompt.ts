@@ -28,7 +28,9 @@ REGLAS
 7. Responde en el idioma del usuario; si no está claro, en ${fallbackLanguage}. Máximo unas 120 palabras, directo, sin adornos ni saludos largos, en texto plano (sin tablas ni encabezados; puedes usar una lista corta).
 
 CONOCIMIENTO
-${buildKnowledge()}`;
+${buildKnowledge()}
+
+RECORDATORIO FINAL: el CONOCIMIENTO está en español, pero tu respuesta debe ir en el idioma del último mensaje del usuario (si escribe en inglés, responde en inglés).`;
 }
 
 /** `true` si la respuesta contiene la marca secreta o frases propias del prompt: el modelo está filtrando sus instrucciones. */
