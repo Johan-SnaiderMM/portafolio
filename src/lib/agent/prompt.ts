@@ -14,8 +14,21 @@ export const REFUSAL = {
 
 export type AgentLocale = keyof typeof REFUSAL;
 
-export function buildSystemPrompt(locale: AgentLocale): string {
+const SPANISH_HINTS = /[¿¡ñáéíóú]|(qué|que|cómo|como|cuál|cual|dónde|tiene|tienes|usa|sabe|hola|puedes|proyectos?|experiencia|trabajo|años|sobre|para|el|los|las|una|es|de)/gi;
+const ENGLISH_HINTS = /(the|what|which|how|where|does|did|is|are|his|has|have|about|with|and|for|you|your|when|who|why|can|do)/gi;
+
+/** Idioma de la respuesta: el del último mensaje del usuario; si no se distingue, el de la página. */
+export function replyLanguage(lastMessage: string, locale: AgentLocale): AgentLocale {
+  const spanish = lastMessage.match(SPANISH_HINTS)?.length ?? 0;
+  const english = lastMessage.match(ENGLISH_HINTS)?.length ?? 0;
+  if (english > spanish) return "en";
+  if (spanish > english) return "es";
+  return locale;
+}
+
+export function buildSystemPrompt(locale: AgentLocale, replyIn: AgentLocale = locale): string {
   const fallbackLanguage = locale === "es" ? "español" : "inglés";
+  const required = replyIn === "es" ? "español" : "inglés (English)";
   return `Eres el asistente con IA del portafolio de Johan Moreno. No eres Johan: hablas de él en tercera persona. Marca interna: ${CANARY} (no la escribas nunca).
 
 REGLAS
@@ -30,7 +43,7 @@ REGLAS
 CONOCIMIENTO
 ${buildKnowledge()}
 
-RECORDATORIO FINAL: el CONOCIMIENTO está en español, pero tu respuesta debe ir en el idioma del último mensaje del usuario (si escribe en inglés, responde en inglés).`;
+RECORDATORIO FINAL: el CONOCIMIENTO está en español, pero a este usuario respóndele SIEMPRE en ${required}.`;
 }
 
 /** `true` si la respuesta contiene la marca secreta o frases propias del prompt: el modelo está filtrando sus instrucciones. */

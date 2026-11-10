@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { createLimiter } from "../../../lib/agent/limiter";
 import {
   buildSystemPrompt,
+  replyLanguage,
   leaksPrompt,
   REFUSAL,
 } from "../../../lib/agent/prompt";
@@ -68,7 +69,7 @@ export async function POST(request: Request) {
 
   try {
     const reply = await generateReply(
-      buildSystemPrompt(locale),
+      buildSystemPrompt(locale, replyLanguage(messages[messages.length - 1].content, locale)),
       messages,
       {
         GROQ_API_KEY: process.env.GROQ_API_KEY,

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { buildKnowledge } from "./knowledge";
 import { createLimiter } from "./limiter";
-import { buildSystemPrompt, CANARY, leaksPrompt } from "./prompt";
+import { buildSystemPrompt, CANARY, leaksPrompt, replyLanguage } from "./prompt";
 import { AgentError, generateReply, type ProviderEnv } from "./providers";
 import { MAX_HISTORY, MAX_MESSAGE_CHARS, parseChatRequest } from "./validate";
 
@@ -40,8 +40,16 @@ describe("prompt del sistema", () => {
     expect(prompt).toContain(CANARY);
   });
 
-  it("recuerda al final responder en el idioma del usuario", () => {
-    expect(buildSystemPrompt("es").trimEnd().endsWith("responde en inglés).")).toBe(true);
+  it("ordena al final responder en el idioma elegido", () => {
+    expect(buildSystemPrompt("es", "en").trimEnd().endsWith("SIEMPRE en inglés (English).")).toBe(true);
+    expect(buildSystemPrompt("en", "es").trimEnd().endsWith("SIEMPRE en español.")).toBe(true);
+  });
+
+  it("detecta el idioma del último mensaje y, si no se distingue, usa el de la página", () => {
+    expect(replyLanguage("When did Johan graduate, and what is he working on now?", "es")).toBe("en");
+    expect(replyLanguage("¿Qué tecnologías usa?", "en")).toBe("es");
+    expect(replyLanguage("Next.js?", "en")).toBe("en");
+    expect(replyLanguage("Supabase", "es")).toBe("es");
   });
 
   it("usa el idioma de la página como respaldo", () => {
