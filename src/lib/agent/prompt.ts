@@ -14,8 +14,10 @@ export const REFUSAL = {
 
 export type AgentLocale = keyof typeof REFUSAL;
 
-const SPANISH_HINTS = /[¿¡ñáéíóú]|(qué|que|cómo|como|cuál|cual|dónde|tiene|tienes|usa|sabe|hola|puedes|proyectos?|experiencia|trabajo|años|sobre|para|el|los|las|una|es|de)/gi;
-const ENGLISH_HINTS = /(the|what|which|how|where|does|did|is|are|his|has|have|about|with|and|for|you|your|when|who|why|can|do)/gi;
+const SPANISH_HINTS =
+  /[¿¡ñáéíóú]|(?<![\p{L}])(que|como|cual|donde|tiene|tienes|usa|sabe|hola|puedes|proyectos?|experiencia|trabajo|sobre|para|el|los|las|una|es|de)(?![\p{L}])/giu;
+const ENGLISH_HINTS =
+  /(?<![\p{L}])(the|what|which|how|where|does|did|is|are|his|has|have|about|with|and|for|you|your|when|who|why|can|do)(?![\p{L}])/giu;
 
 /** Idioma de la respuesta: el del último mensaje del usuario; si no se distingue, el de la página. */
 export function replyLanguage(lastMessage: string, locale: AgentLocale): AgentLocale {
