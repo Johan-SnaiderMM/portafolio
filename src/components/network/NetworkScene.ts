@@ -100,6 +100,8 @@ export function createNetworkScene(
     uOutput: { value: 0 },
     uWave: { value: 0 },
     uLineBoost: { value: 1 },
+    uPing: { value: -2 },
+    uPingPower: { value: 0 },
   };
 
   const pointGeometry = new BufferGeometry();
@@ -112,9 +114,12 @@ export function createNetworkScene(
   pointGeometry.setAttribute("aWinner", new BufferAttribute(points.winner, 1));
 
   const lineGeometry = new BufferGeometry();
-  lineGeometry.setAttribute("position", new BufferAttribute(lines.cloud, 3));
-  lineGeometry.setAttribute("aOrdered", new BufferAttribute(lines.ordered, 3));
-  lineGeometry.setAttribute("aSeed", new BufferAttribute(lines.seed, 1));
+  lineGeometry.setAttribute("position", new BufferAttribute(lines.cloudA, 3));
+  lineGeometry.setAttribute("aCloudB", new BufferAttribute(lines.cloudB, 3));
+  lineGeometry.setAttribute("aOrdA", new BufferAttribute(lines.orderedA, 3));
+  lineGeometry.setAttribute("aOrdB", new BufferAttribute(lines.orderedB, 3));
+  lineGeometry.setAttribute("aSeedA", new BufferAttribute(lines.seedA, 1));
+  lineGeometry.setAttribute("aSeedB", new BufferAttribute(lines.seedB, 1));
   lineGeometry.setAttribute("aT", new BufferAttribute(lines.t, 1));
   lineGeometry.setAttribute("aFrom", new BufferAttribute(lines.from, 1));
   lineGeometry.setAttribute("aPhase", new BufferAttribute(lines.phase, 1));
@@ -213,6 +218,16 @@ export function createNetworkScene(
     pointerWanted = 0;
   };
 
+  // Un clic o un toque manda un frente de luz a traves de la red (entrada a salida).
+  const PING_SECONDS = 1.1;
+  let pingAge = Number.POSITIVE_INFINITY;
+  const onPointerDown = (event: PointerEvent) => {
+    // Solo si se toca la parte con la red; los clics en botones y campos no cuentan.
+    const target = event.target as Element | null;
+    if (target?.closest("a, button, input, textarea, select, label, canvas")) return;
+    pingAge = 0;
+  };
+
   // --- Estado animado -----------------------------------------------------------
   const state = {
     cx: Number.NaN,
@@ -279,9 +294,9 @@ export function createNetworkScene(
     );
     const sway = 1 - 0.5 * state.dock;
     group.rotation.y =
-      pointer.x * 0.32 * pointerStrength + Math.sin(time * 0.23) * 0.08 * sway;
+      pointer.x * 0.36 * pointerStrength + Math.sin(time * 0.23) * 0.2 * sway;
     group.rotation.x =
-      -pointer.y * 0.16 * pointerStrength + Math.sin(time * 0.17) * 0.03 * sway;
+      -pointer.y * 0.18 * pointerStrength + Math.sin(time * 0.17) * 0.07 * sway;
 
     fadeIn = Math.min(1, fadeIn + dt / 0.8);
     uniforms.uTime.value = time;
@@ -289,6 +304,14 @@ export function createNetworkScene(
     uniforms.uOutput.value = state.output;
     uniforms.uAlpha.value = state.alpha * fadeIn;
     uniforms.uWave.value = (time * 0.2 - Math.floor(time * 0.2)) * 3.8 - 0.4;
+    if (pingAge < PING_SECONDS) {
+      pingAge += dt;
+      const k = Math.min(1, pingAge / PING_SECONDS);
+      uniforms.uPing.value = -0.4 + k * 4.0;
+      uniforms.uPingPower.value = 1 - k * k;
+    } else {
+      uniforms.uPingPower.value = 0;
+    }
     uniforms.uSizeScale.value = Math.min(1.35, Math.max(0.55, state.widthPx / 520));
     (uniforms.uPointer.value as Vector2).copy(pointer);
     uniforms.uPointerStrength.value = pointerStrength;
@@ -386,6 +409,7 @@ export function createNetworkScene(
   canvas.addEventListener("webglcontextlost", onContextLost);
   window.addEventListener("resize", queueResize);
   window.addEventListener("pointermove", onPointerMove, { passive: true });
+  window.addEventListener("pointerdown", onPointerDown, { passive: true });
   document.documentElement.addEventListener("mouseleave", onPointerLeave);
   bodyObserver?.observe(document.body);
 
@@ -396,6 +420,7 @@ export function createNetworkScene(
     canvas.removeEventListener("webglcontextlost", onContextLost);
     window.removeEventListener("resize", queueResize);
     window.removeEventListener("pointermove", onPointerMove);
+    window.removeEventListener("pointerdown", onPointerDown);
     document.documentElement.removeEventListener("mouseleave", onPointerLeave);
     bodyObserver?.disconnect();
     document.documentElement.removeAttribute("data-network-dock");

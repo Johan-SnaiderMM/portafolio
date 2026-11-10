@@ -87,7 +87,9 @@ docs/PLAN.md         plan, decisiones y fases
 
 ## Red 3D de la portada
 
-Un fondo fijo con una red neuronal de puntos y líneas ámbar (Three.js directo, un solo juego de *shaders*). Nace como nube suelta en el hueco de la portada, se ordena en capas al bajar, se acopla al lado como fondo tenue y, en el contacto, enciende la salida. Reacciona al cursor.
+Un fondo fijo con una red neuronal de puntos y líneas ámbar (Three.js directo, un solo juego de *shaders*). Nace como nube suelta en el hueco de la portada, se ordena en capas al bajar, se acopla al lado como fondo tenue y, en el contacto, enciende la salida. Reacciona al cursor y a los clics (un frente de luz cruza la red de entrada a salida).
+
+- **Aspecto:** las conexiones son arcos partidos en 8 tramos (`LINE_SEGMENTS`), así las señales viajan como cometas con cabeza nítida y cola; los puntos y líneas lejanos se atenúan y encogen (profundidad), y los nodos más excitados arden casi blancos en el centro, como un fósforo.
 
 - **Carga diferida:** `NetworkBackdrop` importa la escena después de `load`; el *chunk* de Three.js (~132 kB gzip) no entra en la primera carga.
 - **Alternativa siempre disponible:** el esquema SVG de la portada (`NetworkDiagram`) es lo que se ve sin JavaScript, mientras carga la escena y cuando no se usa 3D. Quien pide «menos movimiento» o «ahorro de datos» nunca recibe 3D; tampoco los equipos de ≤ 2 GB, ≤ 2 núcleos o sin WebGL con aceleración por hardware (la sonda usa `failIfMajorPerformanceCaveat`, así no se descarga la escena para dibujarla por software).

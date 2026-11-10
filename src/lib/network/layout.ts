@@ -93,10 +93,11 @@ function cloudPosition(rng: () => number, ordered: Vec3): Vec3 {
   } while (x * x + y * y + z * z > 1);
   // Conserva buena parte de la posición ordenada: así las conexiones no cruzan
   // toda la nube y esta «cristaliza» en capas sin caos.
+  // Mas profundidad en z que antes: la nube se lee como un volumen y no como un dibujo plano.
   return [
     ordered[0] * 0.55 + x * 1.35,
-    ordered[1] * 0.55 + y * 1.0,
-    ordered[2] * 0.55 + z * 0.95,
+    ordered[1] * 0.55 + y * 1.05,
+    ordered[2] * 0.55 + z * 1.45,
   ];
 }
 

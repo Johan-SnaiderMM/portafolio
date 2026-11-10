@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildBuffers } from "./buffers";
+import { LINE_SEGMENTS, buildBuffers } from "./buffers";
 import { generateNetwork } from "./layout";
 
 const layout = generateNetwork(7);
@@ -14,11 +14,13 @@ describe("buildBuffers", () => {
       expect(points[name]).toHaveLength(points.count);
     }
 
-    expect(lines.vertexCount).toBe(layout.edges.length * 2);
-    expect(lines.cloud).toHaveLength(lines.vertexCount * 3);
-    expect(lines.ordered).toHaveLength(lines.vertexCount * 3);
+    expect(lines.vertexCount).toBe(layout.edges.length * LINE_SEGMENTS * 2);
+    for (const name of ["cloudA", "cloudB", "orderedA", "orderedB"] as const) {
+      expect(lines[name]).toHaveLength(lines.vertexCount * 3);
+    }
     for (const name of [
-      "seed",
+      "seedA",
+      "seedB",
       "t",
       "from",
       "phase",
@@ -38,32 +40,46 @@ describe("buildBuffers", () => {
     for (const size of points.size) expect(size).toBeGreaterThan(0);
   });
 
-  it("marca origen (0) y destino (1) de cada conexión", () => {
-    for (let i = 0; i < lines.vertexCount; i += 2) {
-      expect(lines.t[i]).toBe(0);
-      expect(lines.t[i + 1]).toBe(1);
-      expect(lines.from[i]).toBe(lines.from[i + 1]);
-    }
+  it("reparte los tramos de cada conexión de 0 a 1 sin huecos", () => {
+    const perEdge = LINE_SEGMENTS * 2;
+    layout.edges.forEach((edge, i) => {
+      const base = i * perEdge;
+      expect(lines.t[base]).toBe(0);
+      expect(lines.t[base + perEdge - 1]).toBe(1);
+      for (let segment = 0; segment < LINE_SEGMENTS; segment++) {
+        const start = base + segment * 2;
+        expect(lines.t[start]).toBeCloseTo(segment / LINE_SEGMENTS, 6);
+        expect(lines.t[start + 1]).toBeCloseTo((segment + 1) / LINE_SEGMENTS, 6);
+        // El final de un tramo es el principio del siguiente.
+        if (segment > 0) expect(lines.t[start]).toBe(lines.t[start - 1]);
+      }
+      expect(lines.from[base]).toBe(edge.transition);
+    });
   });
 
-  it("usa la posición del nodo en cada extremo de la conexión", () => {
+  it("guarda en cada vértice las posiciones y semillas de los dos nodos de la conexión", () => {
     layout.edges.forEach((edge, i) => {
       const from = layout.nodes[edge.from];
       const to = layout.nodes[edge.to];
-      expect(Array.from(lines.ordered.slice(i * 6, i * 6 + 3))).toEqual(
-        from.ordered.map((v) => Math.fround(v)),
-      );
-      expect(Array.from(lines.cloud.slice(i * 6 + 3, i * 6 + 6))).toEqual(
-        to.cloud.map((v) => Math.fround(v)),
-      );
+      for (const v of [i * LINE_SEGMENTS * 2, (i + 1) * LINE_SEGMENTS * 2 - 1]) {
+        expect(Array.from(lines.orderedA.slice(v * 3, v * 3 + 3))).toEqual(
+          from.ordered.map((x) => Math.fround(x)),
+        );
+        expect(Array.from(lines.cloudB.slice(v * 3, v * 3 + 3))).toEqual(
+          to.cloud.map((x) => Math.fround(x)),
+        );
+        expect(lines.seedA[v]).toBeCloseTo(from.seed, 6);
+        expect(lines.seedB[v]).toBeCloseTo(to.seed, 6);
+      }
     });
   });
 
   it("marca las conexiones que llegan a la salida", () => {
     layout.edges.forEach((edge, i) => {
       const expected = edge.transition === 2 ? 1 : 0;
-      expect(lines.toOutput[i * 2]).toBe(expected);
-      expect(lines.toOutput[i * 2 + 1]).toBe(expected);
+      const base = i * LINE_SEGMENTS * 2;
+      expect(lines.toOutput[base]).toBe(expected);
+      expect(lines.toOutput[base + LINE_SEGMENTS * 2 - 1]).toBe(expected);
     });
   });
 });
