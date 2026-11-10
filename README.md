@@ -39,7 +39,15 @@ Requiere Node 24 (el mismo de Vercel).
 | `GEMINI_API_KEY` | Asistente con IA: respaldo (Google AI Studio, capa gratuita) | sin clave = se usa solo Groq |
 | `GROQ_MODEL` / `GEMINI_MODEL` | Cambiar de modelo si el proveedor retira alguno | `llama-3.3-70b-versatile` / `gemini-3.5-flash-lite` |
 
-Sin ninguna de las dos claves el sitio funciona igual y el asistente responde «no está disponible». La fase 6 sumará la clave de Resend. **Las claves solo van en variables de entorno del servidor** (en local, un `.env.local` que git ignora), nunca en el código ni en el navegador.
+Sin ninguna de las dos claves el sitio funciona igual y el asistente responde «no está disponible». | `RESEND_API_KEY` | Contacto: envío del ticket por correo (Resend, plan gratuito) | sin clave = el formulario responde «no disponible» |
+| `CONTACT_TO_EMAIL` | Contacto: correo que recibe los tickets (no se publica) | — |
+| `CONTACT_FROM` | Contacto: remitente | `Portafolio <onboarding@resend.dev>` (sin dominio propio, Resend solo entrega al correo de la cuenta) |
+
+**Las claves solo van en variables de entorno del servidor** (en local, un `.env.local` que git ignora), nunca en el código ni en el navegador.
+
+## Contacto como ticket
+
+`POST /api/contact` (`src/app/api/contact`, lógica en `src/lib/contact`). Valida los campos, descarta programas (campo trampa y tiempo mínimo de llenado), limita a 3 tickets por visitante cada 30 minutos y 40 al día, acepta solo el mismo origen y manda un correo de texto plano por Resend con `Reply-To` del visitante y un código `TKT-XXXX`. No se guarda nada.
 
 ## Asistente con IA
 

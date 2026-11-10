@@ -108,6 +108,40 @@ export interface AgentText {
   };
 }
 
+/** Textos del formulario de contacto «como ticket». `{id}`, `{n}` y `{max}` se reemplazan al mostrarlos. */
+export interface ContactText {
+  heading: string;
+  text: string;
+  linkedinLabel: string;
+  githubLabel: string;
+  alsoOn: string;
+  form: {
+    name: string;
+    email: string;
+    subject: string;
+    priority: string;
+    priorities: { low: string; normal: string; high: string };
+    message: string;
+    messageHint: string;
+    send: string;
+    sending: string;
+    counter: string;
+    privacy: string;
+  };
+  success: { title: string; text: string; another: string };
+  errors: {
+    name: string;
+    email: string;
+    subject: string;
+    priority: string;
+    message: string;
+    rate: string;
+    unavailable: string;
+    network: string;
+    generic: string;
+  };
+}
+
 export interface PanelText {
   heading: string;
   text: string;
@@ -162,6 +196,6 @@ export interface Dictionary {
     leaves: LeavesLabText;
   };
   agent: AgentText;
-  contact: PanelText & { linkedinLabel: string; githubLabel: string };
+  contact: ContactText;
   footer: { rights: string; built: string };
 }

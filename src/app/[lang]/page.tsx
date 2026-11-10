@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
 import { AgentChat } from "../../components/agent/AgentChat";
+import { ContactForm } from "../../components/contact/ContactForm";
+import { ExternalLink } from "../../components/ExternalLink";
 import { Hero } from "../../components/Hero";
 import { Lab } from "../../components/Lab";
-import { Panel } from "../../components/Panel";
 import { Projects } from "../../components/Projects";
 import { Section } from "../../components/Section";
 import { profileLinks } from "../../content/projects";
@@ -40,16 +41,22 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
 
       {/* En pantallas angostas la red 3D se enciende debajo del contacto: se le deja sitio. */}
       <Section id="contacto" label={dict.nav.contact} className="max-lg:pb-80">
-        <Panel
-          heading={dict.contact.heading}
-          text={dict.contact.text}
-          status={dict.contact.status}
-          links={[
-            { label: dict.contact.linkedinLabel, href: profileLinks.linkedin },
-            { label: dict.contact.githubLabel, href: profileLinks.github },
-          ]}
-          opensInNewTab={opensInNewTab}
-        />
+        <h3 className="max-w-[30rem] text-2xl/9 font-medium tracking-tight text-hueso sm:text-3xl/10">
+          {dict.contact.heading}
+        </h3>
+        <p className="mt-4 max-w-[30rem] text-ceniza">{dict.contact.text}</p>
+        <div className="mt-10 max-w-3xl">
+          <ContactForm text={dict.contact} />
+        </div>
+        <p className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-[13px] text-ceniza">
+          {dict.contact.alsoOn}
+          <ExternalLink href={profileLinks.linkedin} srText={opensInNewTab}>
+            {dict.contact.linkedinLabel}
+          </ExternalLink>
+          <ExternalLink href={profileLinks.github} srText={opensInNewTab}>
+            {dict.contact.githubLabel}
+          </ExternalLink>
+        </p>
       </Section>
     </main>
   );
