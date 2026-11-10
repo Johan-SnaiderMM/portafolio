@@ -1,0 +1,14 @@
+{
+  "url": "https://mesa-ayuda-ti-sandy.vercel.app",
+  "ancho": 1280,
+  "alto": 800,
+  "pasos": [
+    { "esperar": 3000 },
+    { "clic": "Entrar como administrador" },
+    { "esperar": 20000 },
+    { "foto": "mesa-1" },
+    { "clic": "Métricas" },
+    { "esperar": 12000 },
+    { "foto": "mesa-metricas" }
+  ]
+}

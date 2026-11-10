@@ -1,0 +1,17 @@
+{
+  "url": "https://comandacomi.vercel.app",
+  "ancho": 390,
+  "alto": 844,
+  "dpr": 2,
+  "movil": true,
+  "pasos": [
+    { "esperar": 3000 },
+    { "foto": "comanda-0" },
+    { "clic": "Entrar a la demo" },
+    { "esperar": 12000 },
+    { "foto": "comanda-1" },
+    { "clic": "Entrar a la demo" },
+    { "esperar": 12000 },
+    { "foto": "comanda-2" }
+  ]
+}

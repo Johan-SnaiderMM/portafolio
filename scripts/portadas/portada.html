@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Portadas</title>
+<!-- Plantilla de las portadas 1200×630. Se elige con el hash: portada.html#mesa-ayuda -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112,300..500&display=swap"
+  rel="stylesheet"
+/>
+<style>
+  :root {
+    --tinta: #0b0a08;
+    --hollin: #13110e;
+    --trazo: #2a261f;
+    --ceniza: #8c8576;
+    --hueso: #ece7da;
+    --ambar: #ffb020;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; background: var(--tinta); }
+  body { position: relative; font-family: "Martian Mono", ui-monospace, monospace; color: var(--hueso); }
+
+  /* Fondo: cuadrícula tenue y un resplandor ámbar en una esquina. */
+  .fondo {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(60% 80% at 100% 0%, rgba(255, 176, 32, 0.16), transparent 70%),
+      linear-gradient(var(--trazo) 1px, transparent 1px) 0 0 / 60px 60px,
+      linear-gradient(90deg, var(--trazo) 1px, transparent 1px) 0 0 / 60px 60px;
+    opacity: 0.55;
+    mask-image: linear-gradient(180deg, #000 30%, transparent 100%);
+  }
+  .fondo::after { content: ""; position: absolute; inset: 0; background: var(--tinta); opacity: 0; }
+
+  .etiqueta {
+    position: absolute; left: 56px; bottom: 44px;
+    display: flex; gap: 10px; align-items: center;
+    font-size: 15px; letter-spacing: 0.04em; color: var(--ceniza);
+    z-index: 3;
+  }
+  .etiqueta i { width: 8px; height: 8px; background: var(--ambar); display: block; }
+  .etiqueta b { font-weight: 400; color: var(--hueso); }
+
+  /* Marco de navegador */
+  .ventana {
+    position: absolute; left: 56px; right: 56px; top: 56px; height: 600px;
+    background: var(--hollin); border: 1px solid #3a352b;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 176, 32, 0.06);
+    overflow: hidden;
+  }
+  .ventana .barra {
+    height: 34px; display: flex; align-items: center; gap: 7px; padding: 0 14px;
+    background: #17140f; border-bottom: 1px solid var(--trazo);
+  }
+  .ventana .barra span { width: 10px; height: 10px; border-radius: 50%; background: #3a352b; }
+  .ventana .barra em {
+    margin-left: 14px; font-style: normal; font-size: 12px; color: var(--ceniza);
+    background: var(--tinta); border: 1px solid var(--trazo); padding: 4px 14px; flex: 0 1 420px;
+  }
+  .ventana .barra .pila-barra { margin-left: auto; font-weight: 400; font-size: 12px; color: var(--ambar); }
+  .ventana img { display: block; width: 100%; }
+
+  /* Marco de celular */
+  .celular {
+    position: absolute; width: 270px; height: 584px; border-radius: 40px;
+    background: #050505; border: 3px solid #3a352b; padding: 9px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65);
+    overflow: hidden;
+  }
+  .celular img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 31px; }
+
+  /* Orígenes: esfera de alambre ámbar (panorama 360°) */
+  .origen { position: absolute; inset: 0; }
+  .origen svg { position: absolute; right: 40px; top: 30px; width: 570px; height: 570px; }
+  .origen h1 {
+    position: absolute; left: 56px; top: 210px;
+    font-size: 74px; font-weight: 300; letter-spacing: -0.045em; font-stretch: 88%; line-height: 1;
+  }
+  .origen p { position: absolute; left: 58px; top: 306px; width: 440px; font-size: 16px; line-height: 1.7; color: var(--ceniza); }
+
+  [data-p] { display: none; }
+  body.mesa-ayuda [data-p~="mesa-ayuda"],
+  body.red-neuronal [data-p~="red-neuronal"],
+  body.hojas-banano [data-p~="hojas-banano"],
+  body.origenes [data-p~="origenes"],
+  body.comanda [data-p~="comanda"] { display: block; }
+  body.origenes .etiqueta, body.comanda .etiqueta { display: flex; }
+</style>
+</head>
+<body>
+  <div class="fondo"></div>
+
+  <!-- Web: marco de navegador; la captura asoma recortada por abajo -->
+  <div class="ventana" data-p="mesa-ayuda">
+    <div class="barra"><span></span><span></span><span></span><em>mesa-ayuda-ti</em><b class="pila-barra"></b></div>
+    <img src="fuentes/mesa-metricas.png" alt="" />
+  </div>
+  <div class="ventana" data-p="red-neuronal">
+    <div class="barra"><span></span><span></span><span></span><em>red-neuronal-desde-cero</em><b class="pila-barra"></b></div>
+    <img src="fuentes/red-1.png" alt="" />
+  </div>
+  <div class="ventana" data-p="hojas-banano">
+    <div class="barra"><span></span><span></span><span></span><em>clasificador-hojas-banano</em><b class="pila-barra"></b></div>
+    <img src="fuentes/hojas-1.png" alt="" />
+  </div>
+
+  <!-- Comanda: dos celulares en escalera -->
+  <div class="celular" data-p="comanda" style="left: 430px; top: 70px; transform: rotate(-3deg);">
+    <img src="fuentes/comanda-0.png" alt="" />
+  </div>
+  <div class="celular" data-p="comanda" style="left: 740px; top: 120px; transform: rotate(3deg);">
+    <img src="fuentes/comanda-1.png" alt="" />
+  </div>
+
+  <!-- Orígenes -->
+  <div class="origen" data-p="origenes">
+    <h1>Orígenes</h1>
+    <p>360° · voz · mini-RAG</p>
+    <svg viewBox="-300 -300 600 600" fill="none" stroke="#ffb020" stroke-width="1.2" id="esfera"></svg>
+  </div>
+
+  <div class="etiqueta" data-p="origenes comanda"><i></i><b id="pila"></b></div>
+
+<script>
+  const pilas = {
+    "mesa-ayuda": "NestJS · Angular · PostgreSQL",
+    "red-neuronal": "NumPy · retropropagación a mano",
+    "hojas-banano": "PyTorch · ONNX · en el navegador",
+    origenes: "React · Express · Three.js",
+    comanda: "Next.js · TypeScript · Supabase",
+  };
+  const id = location.hash.slice(1) || "mesa-ayuda";
+  document.body.className = id;
+  document.getElementById("pila").textContent = pilas[id] ?? "";
+  document.querySelectorAll(".pila-barra").forEach((el) => (el.textContent = pilas[id] ?? ""));
+
+  // Esfera: meridianos y paralelos proyectados con una ligera inclinación.
+  if (id === "origenes") {
+    const R = 250, tilt = 0.5, svg = document.getElementById("esfera");
+    const proj = (lat, lon) => {
+      const x = Math.cos(lat) * Math.sin(lon), y = Math.sin(lat), z = Math.cos(lat) * Math.cos(lon);
+      const y2 = y * Math.cos(tilt) - z * Math.sin(tilt);
+      const z2 = y * Math.sin(tilt) + z * Math.cos(tilt);
+      return [x * R, -y2 * R, z2];
+    };
+    const line = (points) => {
+      let d = "", prevFront = null;
+      for (const [x, y, z] of points) {
+        const front = z >= 0;
+        d += (prevFront === front ? "L" : "M") + x.toFixed(1) + " " + y.toFixed(1) + " ";
+        prevFront = front;
+      }
+      return d;
+    };
+    const add = (pts, opacity) => {
+      const front = [], back = [];
+      for (const p of pts) (p[2] >= 0 ? front : back).push(p);
+      for (const [group, o] of [[back, opacity * 0.35], [front, opacity]]) {
+        if (!group.length) continue;
+        const el = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        // Cada tramo continuo por separado para no unir el frente con el fondo.
+        let d = "", last = null;
+        for (const [x, y] of group) {
+          d += (last && Math.hypot(x - last[0], y - last[1]) < 30 ? "L" : "M") + x.toFixed(1) + " " + y.toFixed(1) + " ";
+          last = [x, y];
+        }
+        el.setAttribute("d", d);
+        el.setAttribute("opacity", o);
+        svg.appendChild(el);
+      }
+    };
+    for (let i = -4; i <= 4; i++) {
+      const lat = (i / 5) * (Math.PI / 2);
+      add(Array.from({ length: 181 }, (_, k) => proj(lat, (k / 180) * Math.PI * 2)), 0.8);
+    }
+    for (let m = 0; m < 12; m++) {
+      const lon = (m / 12) * Math.PI * 2;
+      add(Array.from({ length: 91 }, (_, k) => proj(-Math.PI / 2 + (k / 90) * Math.PI, lon)), 0.8);
+    }
+    // Contorno y un punto: el visitante en el centro.
+    const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    c.setAttribute("r", R); c.setAttribute("opacity", 0.9); svg.appendChild(c);
+    const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    dot.setAttribute("r", 5); dot.setAttribute("fill", "#ffb020"); dot.setAttribute("stroke", "none"); svg.appendChild(dot);
+  }
+</script>
+</body>
+</html>

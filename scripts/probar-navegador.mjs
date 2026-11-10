@@ -343,6 +343,66 @@ const scenarios = {
     await s.close();
   },
 
+  /**
+   * Captura cualquier página (p. ej. una demo): URL, NOMBRE, ANCHO, ALTO, DPR,
+   * MOVIL=1, ESPERA (ms) y CLICS="texto1|texto2" (botones o enlaces que se pulsan).
+   */
+  async demo() {
+    const url = process.env.URL;
+    if (!url) throw new Error("Falta URL=...");
+    const s = await session();
+    await s.viewport(Number(process.env.ANCHO ?? 1280), Number(process.env.ALTO ?? 800), {
+      dpr: Number(process.env.DPR ?? 1),
+      mobile: Boolean(process.env.MOVIL),
+    });
+    await s.goto(url);
+    await sleep(Number(process.env.ESPERA ?? 3500));
+    for (const text of (process.env.CLICS ?? "").split("|").filter(Boolean)) {
+      const clicked = await s.run(`(() => { const el = [...document.querySelectorAll('button, a, [role=button]')].find((e) => e.textContent.trim().includes(${JSON.stringify(text)})); el?.click(); return Boolean(el); })()`);
+      console.log(`clic «${text}»:`, clicked);
+      await sleep(2800);
+    }
+    await s.shot(process.env.NOMBRE ?? "demo");
+    s.printLogs();
+    await s.close();
+  },
+
+  /**
+   * Sigue un guion JSON (GUION=ruta): { url, ancho, alto, dpr, movil, pasos: [...] }.
+   * Pasos: {"esperar": ms} · {"clic": "texto"} · {"trazo": [[x, y], ...]} (arrastra el mouse)
+   *        {"foto": "nombre"} · {"ejecutar": "js"}
+   */
+  async guion() {
+    const { readFileSync } = await import("node:fs");
+    const script = JSON.parse(readFileSync(process.env.GUION, "utf8"));
+    const s = await session();
+    await s.viewport(script.ancho ?? 1280, script.alto ?? 800, { dpr: script.dpr ?? 1, mobile: Boolean(script.movil) });
+    await s.goto(script.url);
+    for (const step of script.pasos) {
+      if (step.esperar) await sleep(step.esperar);
+      if (step.clic) {
+        // Entre los elementos que contienen el texto se pulsa el más específico (el de texto más corto).
+        const clicked = await s.run(`(() => { const found = [...document.querySelectorAll('button, a, [role=button], li, label')].filter((e) => e.textContent.trim().includes(${JSON.stringify(step.clic)})).sort((a, b) => a.textContent.length - b.textContent.length); found[0]?.click(); return found.length; })()`);
+        console.log(`clic «${step.clic}»:`, clicked);
+      }
+      if (step.trazo) {
+        const [first, ...rest] = step.trazo;
+        const mouse = (type, [x, y]) => s.cdp.send("Input.dispatchMouseEvent", { type, x, y, button: "left", buttons: type === "mouseReleased" ? 0 : 1, clickCount: 1 });
+        await mouse("mouseMoved", first);
+        await mouse("mousePressed", first);
+        for (const point of rest) {
+          await mouse("mouseMoved", point);
+          await sleep(25);
+        }
+        await mouse("mouseReleased", rest.at(-1) ?? first);
+      }
+      if (step.ejecutar) console.log("js:", await s.run(step.ejecutar));
+      if (step.foto) await s.shot(step.foto);
+    }
+    s.printLogs();
+    await s.close();
+  },
+
   async alternativas() {
     const report = async (label, url, { args = [], reducedMotion = false, wait = 3000 } = {}) => {
       const s = await session(args);

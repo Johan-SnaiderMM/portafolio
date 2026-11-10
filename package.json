@@ -10,7 +10,9 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "verificar": "npm run lint && npm run typecheck && npm test"
+    "verificar": "npm run lint && npm run typecheck && npm test",
+    "enlaces": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/revisar-enlaces.mjs",
+    "portadas": "node scripts/generar-portadas.mjs"
   },
   "dependencies": {
     "next": "16.4.6",

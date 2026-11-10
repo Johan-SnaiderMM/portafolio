@@ -5,6 +5,14 @@ export interface FeaturedText {
   summary: string;
   metricValue: string;
   metricLabel: string;
+  /** Párrafo de arriba de la página de detalle. */
+  lead: string;
+  /** Lo que hace y cómo está hecho, en frases completas. */
+  highlights: readonly string[];
+  /** Lo que el proyecto no es o no ha probado: se dice sin rodeos. */
+  limits: string;
+  /** Descripción de la portada para lectores de pantalla. */
+  coverAlt: string;
 }
 
 export interface OtherText {
@@ -43,6 +51,18 @@ export interface Dictionary {
   projects: {
     intro: string;
     note: string;
+    detail: {
+      /** Enlace de la lista a la página del proyecto. */
+      seeDetail: string;
+      back: string;
+      highlightsTitle: string;
+      stackTitle: string;
+      limitsTitle: string;
+      previous: string;
+      next: string;
+      /** Texto del enlace a otro proyecto: «Proyecto anterior: X». */
+      navLabel: string;
+    };
     featured: Record<FeaturedId, FeaturedText>;
     otherTitle: string;
     other: Record<OtherId, OtherText>;

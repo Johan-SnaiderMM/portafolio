@@ -68,6 +68,10 @@ export const featuredProjects = [
 
 export type FeaturedId = (typeof featuredProjects)[number]["id"];
 
+/** Portada de cada proyecto destacado (1200×630, ver `scripts/portadas`). */
+export const coverPath = (id: FeaturedId) => `/projects/${id}.png`;
+export const COVER_SIZE = { width: 1200, height: 630 } as const;
+
 export const otherProjects = [
   {
     id: "polo-air-cool",

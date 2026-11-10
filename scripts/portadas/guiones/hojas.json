@@ -1,0 +1,11 @@
+{
+  "url": "https://clasificador-hojas-banano.vercel.app",
+  "ancho": 1280,
+  "alto": 1000,
+  "pasos": [
+    { "esperar": 4000 },
+    { "trazo": [[300, 794]] },
+    { "esperar": 12000 },
+    { "foto": "hojas-1" }
+  ]
+}

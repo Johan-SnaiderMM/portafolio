@@ -25,7 +25,7 @@ describe("diccionarios", () => {
   it("no tienen textos vacíos ni marcas pendientes", () => {
     for (const [path, text] of [...spanish, ...english]) {
       expect(text.trim(), path).not.toBe("");
-      expect(text, path).not.toMatch(/TODO|FIXME|lorem/i);
+      expect(text, path).not.toMatch(/\b(?:TODO|FIXME)\b|[Ll]orem ipsum/);
     }
   });
 

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { ArrowUpRight } from "./icons";
 
 interface ExternalLinkProps {
   href: string;
@@ -8,25 +9,14 @@ interface ExternalLinkProps {
   className?: string;
 }
 
+const ARROW = (
+  <ArrowUpRight className="ml-1.5 inline-block size-3 align-baseline transition-transform group-hover/link:-translate-y-px group-hover/link:translate-x-px" />
+);
+
 /**
  * Enlace a otro sitio. La flecha va en línea con el texto (no en un flex) para
  * que, si el texto ocupa dos renglones, la flecha quede pegada al final.
  */
-const ARROW = (
-  <svg
-    aria-hidden="true"
-    viewBox="0 0 12 12"
-    className="ml-1.5 inline-block size-3 align-baseline transition-transform group-hover/link:-translate-y-px group-hover/link:translate-x-px"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.4"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M3 9l6-6M4.5 3H9v4.5" />
-  </svg>
-);
-
 export function ExternalLink({
   href,
   srText,

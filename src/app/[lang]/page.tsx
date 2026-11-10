@@ -16,7 +16,7 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
   return (
     <main id="contenido">
       <Hero dict={dict} />
-      <Projects dict={dict} />
+      <Projects dict={dict} locale={lang} />
 
       <Section id="laboratorio" label={dict.nav.lab}>
         <Panel
