@@ -49,6 +49,7 @@ export async function generateMetadata({
       url: path,
       images: [{ url: coverPath(id), width: 1200, height: 630, alt: text.coverAlt }],
     },
+    twitter: { card: "summary_large_image" },
   };
 }
 

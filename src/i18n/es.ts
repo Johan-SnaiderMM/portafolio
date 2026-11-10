@@ -22,6 +22,21 @@ export const es = {
     agent: "Agente",
     contact: "Contacto",
   },
+  quick: {
+    link: "Versión rápida",
+    metaTitle: "Versión rápida · Johan Moreno",
+    metaDescription:
+      "Lo esencial de Johan Moreno en una sola página de texto: perfil, proyectos con enlaces y contacto.",
+    intro: "Lo esencial en una página, sin animaciones.",
+    projectsTitle: "Proyectos destacados",
+    otherTitle: "Otros proyectos",
+    contactTitle: "Contacto",
+    contactText: "Abre un ticket desde el formulario del sitio completo o escríbeme por LinkedIn.",
+    contactLink: "Ir al formulario",
+    cv: "Descargar CV (PDF)",
+    seeProject: "Ver el proyecto",
+    fullSite: "Ver el sitio completo",
+  },
   hero: {
     status: "Ingeniero de Sistemas · Apartadó, Urabá",
     lead: "Desarrollo web full stack e IA aplicada. Escribí una red neuronal desde cero (98,1 % en MNIST), entrené un clasificador de hojas de banano (98,5 %) y construí una mesa de ayuda con 294 pruebas automáticas.",

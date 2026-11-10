@@ -22,6 +22,21 @@ export const en = {
     agent: "Agent",
     contact: "Contact",
   },
+  quick: {
+    link: "Quick version",
+    metaTitle: "Quick version · Johan Moreno",
+    metaDescription:
+      "The essentials about Johan Moreno on a single text page: profile, projects with links and contact.",
+    intro: "The essentials on one page, no animations.",
+    projectsTitle: "Featured projects",
+    otherTitle: "Other projects",
+    contactTitle: "Contact",
+    contactText: "Open a ticket from the full site's form or message me on LinkedIn.",
+    contactLink: "Go to the form",
+    cv: "Download resume (PDF)",
+    seeProject: "See the project",
+    fullSite: "See the full site",
+  },
   hero: {
     status: "Systems Engineer · Apartadó, Urabá, Colombia",
     lead: "Full-stack web development and applied AI. I wrote a neural network from scratch (98.1% on MNIST), trained a banana-leaf disease classifier (98.5%) and built a help desk with 294 automated tests.",

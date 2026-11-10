@@ -377,7 +377,7 @@ const scenarios = {
   /**
    * Sigue un guion JSON (GUION=ruta): { url, ancho, alto, dpr, movil, pasos: [...] }.
    * Pasos: {"esperar": ms} · {"clic": "texto"} · {"trazo": [[x, y], ...]} (arrastra el mouse)
-   *        {"foto": "nombre"} · {"ejecutar": "js"}
+   *        {"foto": "nombre"} · {"ejecutar": "js"} · {"tecla": "Tab", "veces": n}
    */
   async guion() {
     const { readFileSync } = await import("node:fs");
@@ -402,6 +402,16 @@ const scenarios = {
           await sleep(25);
         }
         await mouse("mouseReleased", rest.at(-1) ?? first);
+      }
+      if (step.tecla) {
+        // {"tecla": "Tab", "veces": 3, "mayus": false}: pulsa una tecla y, tras cada una, muestra el elemento con foco.
+        for (let i = 0; i < (step.veces ?? 1); i++) {
+          const params = { key: step.tecla, code: step.tecla === "Tab" ? "Tab" : step.tecla, windowsVirtualKeyCode: step.tecla === "Tab" ? 9 : step.tecla === "Enter" ? 13 : 0, modifiers: step.mayus ? 8 : 0 };
+          await s.cdp.send("Input.dispatchKeyEvent", { type: "keyDown", ...params });
+          await s.cdp.send("Input.dispatchKeyEvent", { type: "keyUp", ...params });
+          await sleep(60);
+          if (step.mostrar !== false) console.log("foco:", await s.run("(() => { const e = document.activeElement; return e ? (e.tagName.toLowerCase() + (e.id ? '#' + e.id : '') + ' «' + (e.getAttribute('aria-label') || e.textContent || e.placeholder || '').trim().slice(0, 40) + '»') : 'ninguno'; })()"));
+        }
       }
       if (step.ejecutar) console.log("js:", await s.run(step.ejecutar));
       if (step.foto) await s.shot(step.foto);

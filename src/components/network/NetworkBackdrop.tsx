@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { decideMode } from "../../lib/network/capability";
 import { hasWebGL } from "./webgl";
@@ -20,10 +21,12 @@ type NavigatorWithHints = Navigator & {
  */
 export function NetworkBackdrop() {
   const containerRef = useRef<HTMLDivElement>(null);
+  // La «versión rápida» no lleva 3D ni animaciones.
+  const quick = usePathname().endsWith("/rapida");
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || quick) return;
 
     const root = document.documentElement;
     const params = new URLSearchParams(window.location.search);
@@ -112,7 +115,7 @@ export function NetworkBackdrop() {
       reducedMotion.removeEventListener("change", onMotionChange);
       stop();
     };
-  }, []);
+  }, [quick]);
 
   return (
     <div

@@ -163,6 +163,21 @@ export interface Dictionary {
     links: { demo: string; site: string; code: string };
   };
   nav: { projects: string; lab: string; agent: string; contact: string };
+  /** «Versión rápida»: una sola página de texto, sin animaciones ni 3D. */
+  quick: {
+    link: string;
+    metaTitle: string;
+    metaDescription: string;
+    intro: string;
+    projectsTitle: string;
+    otherTitle: string;
+    contactTitle: string;
+    contactText: string;
+    contactLink: string;
+    cv: string;
+    seeProject: string;
+    fullSite: string;
+  };
   hero: {
     status: string;
     lead: string;

@@ -53,7 +53,9 @@ export async function generateMetadata({
       title: meta.title,
       description: meta.description,
       url: `/${lang}`,
+      images: [{ url: "/og.png", width: 1200, height: 630, alt: meta.title }],
     },
+    twitter: { card: "summary_large_image" },
   };
 }
 
@@ -77,7 +79,7 @@ export default async function RootLayout({
         <NetworkBackdrop />
         <Header locale={locale} dict={dict} />
         {children}
-        <Footer dict={dict} />
+        <Footer dict={dict} locale={locale} />
       </body>
     </html>
   );

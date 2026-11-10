@@ -12,8 +12,9 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const template = join(root, "scripts", "portadas", "portada.html");
 const out = join(root, "public", "projects");
+const home = join(root, "public");
 const all = ["mesa-ayuda", "red-neuronal", "hojas-banano", "origenes", "comanda"];
-const ids = process.argv.length > 2 ? process.argv.slice(2) : all;
+const ids = process.argv.length > 2 ? process.argv.slice(2) : [...all, "home"];
 
 mkdirSync(out, { recursive: true });
 for (const id of ids) {
@@ -26,8 +27,8 @@ for (const id of ids) {
       env: {
         ...process.env,
         URL: `${pathToFileURL(template).href}#${id}`,
-        NOMBRE: id,
-        OUT: out,
+        NOMBRE: id === "home" ? "og" : id,
+        OUT: id === "home" ? home : out,
         ANCHO: "1200",
         ALTO: "630",
         DPR: "1",

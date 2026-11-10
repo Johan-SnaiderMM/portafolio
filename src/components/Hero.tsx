@@ -1,8 +1,9 @@
 import { siteName } from "../content/projects";
-import type { Dictionary } from "../i18n";
+import Link from "next/link";
+import type { Dictionary, Locale } from "../i18n";
 import { NetworkDiagram } from "./NetworkDiagram";
 
-export function Hero({ dict }: { dict: Dictionary }) {
+export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
   const { hero } = dict;
   const [first, ...rest] = siteName.split(" ");
 
@@ -66,6 +67,17 @@ export function Hero({ dict }: { dict: Dictionary }) {
           >
             <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 bg-ambar" />
             {hero.availability}
+          </p>
+          <p
+            className="rise mt-4 font-mono text-[13px]"
+            style={{ "--i": 5 } as React.CSSProperties}
+          >
+            <Link
+              href={`/${locale}/rapida`}
+              className="text-ceniza underline-offset-4 transition-colors hover:text-ambar hover:underline"
+            >
+              {dict.quick.link} →
+            </Link>
           </p>
         </div>
 

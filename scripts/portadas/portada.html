@@ -81,12 +81,23 @@
   }
   .origen p { position: absolute; left: 58px; top: 306px; width: 440px; font-size: 16px; line-height: 1.7; color: var(--ceniza); }
 
+  /* Portada del sitio (imagen para compartir): nombre y red de capas */
+  .home h1 {
+    position: absolute; left: 56px; top: 170px;
+    font-size: 108px; font-weight: 300; letter-spacing: -0.055em; font-stretch: 88%; line-height: 0.95;
+  }
+  .home p { position: absolute; left: 60px; width: 500px; font-size: 18px; line-height: 1.7; }
+  .home p.sub { top: 410px; color: var(--hueso); opacity: 0.85; }
+  .home p.kick { top: 128px; font-size: 14px; color: var(--ceniza); }
+  .home svg { position: absolute; right: 30px; top: 60px; width: 560px; height: 510px; }
+
   [data-p] { display: none; }
   body.mesa-ayuda [data-p~="mesa-ayuda"],
   body.red-neuronal [data-p~="red-neuronal"],
   body.hojas-banano [data-p~="hojas-banano"],
   body.origenes [data-p~="origenes"],
   body.comanda [data-p~="comanda"] { display: block; }
+  body.home [data-p~="home"] { display: block; }
   body.origenes .etiqueta, body.comanda .etiqueta { display: flex; }
 </style>
 </head>
@@ -122,6 +133,14 @@
     <svg viewBox="-300 -300 600 600" fill="none" stroke="#ffb020" stroke-width="1.2" id="esfera"></svg>
   </div>
 
+  <!-- Portada del sitio -->
+  <div class="home" data-p="home">
+    <p class="kick">Ingeniero de Sistemas · Systems Engineer</p>
+    <h1>Johan<br />Moreno</h1>
+    <p class="sub">Full stack · IA aplicada · Applied AI</p>
+    <svg viewBox="0 0 560 510" fill="none" stroke="#ffb020" id="red"></svg>
+  </div>
+
   <div class="etiqueta" data-p="origenes comanda"><i></i><b id="pila"></b></div>
 
 <script>
@@ -136,6 +155,33 @@
   document.body.className = id;
   document.getElementById("pila").textContent = pilas[id] ?? "";
   document.querySelectorAll(".pila-barra").forEach((el) => (el.textContent = pilas[id] ?? ""));
+
+  // Portada del sitio: red de capas 784-128-64-10 (simplificada), como la de la portada.
+  if (id === "home") {
+    const svg = document.getElementById("red");
+    const ns = "http://www.w3.org/2000/svg";
+    const layers = [9, 7, 6, 4];
+    const xs = [50, 190, 340, 500];
+    const nodes = layers.map((count, l) =>
+      Array.from({ length: count }, (_, i) => [xs[l] + (((i * 37) % 11) - 5), 255 + (i - (count - 1) / 2) * (l === 0 ? 50 : 62)]),
+    );
+    const line = (a, b, o) => {
+      const el = document.createElementNS(ns, "line");
+      el.setAttribute("x1", a[0]); el.setAttribute("y1", a[1]); el.setAttribute("x2", b[0]); el.setAttribute("y2", b[1]);
+      el.setAttribute("stroke-width", "1"); el.setAttribute("opacity", o); svg.appendChild(el);
+    };
+    for (let l = 0; l < nodes.length - 1; l++)
+      for (const a of nodes[l]) for (const b of nodes[l + 1]) line(a, b, 0.12 + ((a[1] * 7 + b[1] * 3) % 10) / 40);
+    for (const layer of nodes) for (const n of layer) {
+      const c = document.createElementNS(ns, "circle");
+      c.setAttribute("cx", n[0]); c.setAttribute("cy", n[1]); c.setAttribute("r", 5); c.setAttribute("fill", "#ffb020"); c.setAttribute("stroke", "none");
+      svg.appendChild(c);
+    }
+    const out = nodes[3][2];
+    const halo = document.createElementNS(ns, "circle");
+    halo.setAttribute("cx", out[0]); halo.setAttribute("cy", out[1]); halo.setAttribute("r", 14); halo.setAttribute("stroke-width", "2");
+    svg.appendChild(halo);
+  }
 
   // Esfera: meridianos y paralelos proyectados con una ligera inclinación.
   if (id === "origenes") {
