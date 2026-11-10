@@ -115,6 +115,8 @@ export interface ContactText {
   linkedinLabel: string;
   githubLabel: string;
   alsoOn: string;
+  cvLabel: string;
+  cvFile: string;
   form: {
     name: string;
     email: string;

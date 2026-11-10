@@ -301,6 +301,8 @@ export const es = {
     linkedinLabel: "LinkedIn",
     githubLabel: "GitHub",
     alsoOn: "También en",
+    cvLabel: "Descargar CV (PDF)",
+    cvFile: "/cv/johan-moreno-hv.pdf",
     form: {
       name: "Tu nombre",
       email: "Tu correo",

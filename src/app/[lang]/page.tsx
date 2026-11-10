@@ -49,6 +49,13 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
           <ContactForm text={dict.contact} />
         </div>
         <p className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-[13px] text-ceniza">
+          <a
+            href={dict.contact.cvFile}
+            download
+            className="text-ambar underline-offset-4 hover:underline"
+          >
+            {dict.contact.cvLabel} ↓
+          </a>
           {dict.contact.alsoOn}
           <ExternalLink href={profileLinks.linkedin} srText={opensInNewTab}>
             {dict.contact.linkedinLabel}
