@@ -24,7 +24,8 @@ npm run dev        # http://localhost:3000
 | `npm run verificar` | Lint + tipos + pruebas (correrlo antes de cada commit) |
 | `npm test` | Pruebas (Vitest) |
 | `npm run enlaces` | Revisa que todos los enlaces de `src/content/projects.ts` respondan (LinkedIn devuelve 999 a los robots y se acepta) |
-| `npm run portadas [id…]` | Regenera las portadas 1200×630 de `public/projects` desde `scripts/portadas/portada.html` y las capturas de `scripts/portadas/fuentes` |
+| `node scripts/lighthouse.mjs [URL] [movil\|escritorio]` | Mide con Lighthouse (se baja con npx) usando Edge/Chrome; deja el informe en `capturas/` |
+| `npm run portadas [id…]` | Regenera las portadas 1200×630 de `public/projects` y la imagen para compartir `public/og.png` (`portadas home`) desde `scripts/portadas/portada.html` y las capturas de `scripts/portadas/fuentes` |
 
 Requiere Node 24 (el mismo de Vercel).
 
