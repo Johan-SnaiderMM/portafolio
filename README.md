@@ -51,6 +51,7 @@ src/
   proxy.ts           redirige «/» a /es o /en según Accept-Language
 scripts/probar-navegador.mjs  prueba el sitio en Chrome/Edge sin cabeza (capturas, consola, cuadros por segundo);
                      escenarios `demo` (captura cualquier URL) y `guion` (sigue un JSON de pasos: scripts/portadas/guiones)
+scripts/copiar-wasm.mjs  copia el WebAssembly de onnxruntime-web a public/lab/ort (postinstall y build; ignorado por git)
 scripts/portadas/    plantilla de las portadas, guiones y capturas de origen (demos reales de los proyectos)
 docs/PLAN.md         plan, decisiones y fases
 ```
