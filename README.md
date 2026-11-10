@@ -42,11 +42,26 @@ src/
   app/[lang]/        layout raíz (html lang) y página; /es y /en
   app/globals.css    tema (colores, animaciones) en Tailwind 4
   components/        Header, Hero, Projects, NetworkDiagram, etc.
+  components/network/  fondo 3D: escena de Three.js, shaders y carga diferida
   content/projects.ts  datos de proyectos que no dependen del idioma (enlaces, stack)
   i18n/              diccionarios es/en tipados, idioma por defecto y negociación
+  lib/network/       lógica pura de la red 3D: diseño, colocación según el scroll, capacidad, control de rendimiento
   proxy.ts           redirige «/» a /es o /en según Accept-Language
+scripts/probar-navegador.mjs  prueba el sitio en Chrome/Edge sin cabeza (capturas, consola, cuadros por segundo)
 docs/PLAN.md         plan, decisiones y fases
 ```
+
+## Red 3D de la portada
+
+Un fondo fijo con una red neuronal de puntos y líneas ámbar (Three.js directo, un solo juego de *shaders*). Nace como nube suelta en el hueco de la portada, se ordena en capas al bajar, se acopla al lado como fondo tenue y, en el contacto, enciende la salida. Reacciona al cursor.
+
+- **Carga diferida:** `NetworkBackdrop` importa la escena después de `load`; el *chunk* de Three.js (~132 kB gzip) no entra en la primera carga.
+- **Alternativa siempre disponible:** el esquema SVG de la portada (`NetworkDiagram`) es lo que se ve sin JavaScript, mientras carga la escena y cuando no se usa 3D. Quien pide «menos movimiento» o «ahorro de datos» nunca recibe 3D; tampoco los equipos de ≤ 2 GB, ≤ 2 núcleos o sin WebGL con aceleración por hardware (la sonda usa `failIfMajorPerformanceCaveat`, así no se descarga la escena para dibujarla por software).
+- **Control de rendimiento:** si el promedio pasa de ~28 ms por cuadro (90 cuadros), baja primero la resolución y apaga el empuje del cursor; si sigue lento, la escena se retira sola y queda el SVG. Las pausas largas (pestaña oculta) no cuentan y cada cuadro pesa como máximo 100 ms.
+- **Medido:** 144 cuadros por segundo (6,9 ms) en la GPU Intel UHD del equipo de desarrollo, a 1280×800 y también emulando un celular de 390×844 con el procesador 4× más lento. En un teléfono real de gama baja se comprueba abriendo el sitio con `?fps`.
+- **Direcciones de prueba:** `?3d=off` fuerza la versión estática, `?3d=on` se salta las pruebas de equipo y el control de rendimiento (no las preferencias de la persona) y `?fps` muestra un contador de cuadros por segundo.
+- **Código:** la lógica pura (red, colocación según el scroll, capacidad, control) está en `src/lib/network/` con pruebas; lo que toca WebGL, en `src/components/network/`.
+- **Probarla en un navegador real:** con el sitio corriendo (`npm run build && npm start`), `BASE=http://localhost:3000 node scripts/probar-navegador.mjs escritorio` (o `movil`, `puntero`, `alternativas`, `gobernador`) deja capturas en `capturas/` y muestra los cuadros por segundo. `GPU=1` usa la tarjeta gráfica real; sin eso, WebGL por software, que es mucho más lento y sirve para probar la alternativa de equipos lentos.
 
 ## Decisiones técnicas
 

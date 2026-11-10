@@ -25,8 +25,8 @@ html {
   scroll-padding-top: 4.5rem;
 }
 
+/* Sin fondo en el body: el lienzo 3D fijo va detrás y el fondo lo pone html. */
 body {
-  background: var(--color-tinta);
   color: var(--color-hueso);
   font-family: var(--font-sans);
   font-size: 1rem;
@@ -80,6 +80,35 @@ body {
     animation-timeline: view();
     animation-range: entry 5% entry 40%;
   }
+}
+
+/* Con la red 3D corriendo, el esquema SVG se desvanece y queda de alternativa. */
+.network-static {
+  transition:
+    opacity 0.9s ease,
+    visibility 0s linear 0s;
+}
+
+/* Tras el fundido se oculta del todo y se pausa su pulso: no gasta nada de GPU. */
+html[data-network="3d"] .network-static {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.9s ease,
+    visibility 0s linear 0.9s;
+}
+
+html[data-network="3d"] .net-pulse {
+  animation-play-state: paused;
+}
+
+/* Al acoplarse la red al fondo, el pie del esquema se va para no tapar el texto. */
+.network-caption {
+  transition: opacity 0.5s ease;
+}
+
+html[data-network="3d"][data-network-dock] .network-caption {
+  opacity: 0;
 }
 
 /* Pulso que recorre el camino activo de la red de la portada. */

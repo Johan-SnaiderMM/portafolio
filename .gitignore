@@ -42,3 +42,6 @@ next-env.d.ts
 
 # Sesión local de Claude
 .claude/
+
+# Capturas de las pruebas con navegador (scripts/probar-navegador.mjs)
+capturas/

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Instrument_Sans, Martian_Mono } from "next/font/google";
 import { Footer } from "../../components/Footer";
 import { Header } from "../../components/Header";
+import { NetworkBackdrop } from "../../components/network/NetworkBackdrop";
 import {
   defaultLocale,
   getDictionary,
@@ -73,6 +74,7 @@ export default async function RootLayout({
         >
           {dict.common.skipToContent}
         </a>
+        <NetworkBackdrop />
         <Header locale={locale} dict={dict} />
         {children}
         <Footer dict={dict} />

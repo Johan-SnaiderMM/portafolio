@@ -1,6 +1,8 @@
 /**
  * Esquema de la red 784-128-64-10 de la portada. Es estático (sin WebGL) y
- * determinista, así que también sirve de alternativa a la versión 3D.
+ * determinista: es lo que ve quien no puede o no quiere la versión 3D, y lo
+ * que se ve mientras esta carga. Su contenedor `data-network-slot` marca el
+ * hueco donde la red 3D nace (ver `network/NetworkScene.ts`).
  */
 const LAYERS = [4, 6, 6, 3] as const;
 const LABELS = ["784", "128", "64", "10"] as const;
@@ -40,78 +42,80 @@ export function NetworkDiagram({
 }) {
   return (
     <figure className="w-full max-w-[34rem]">
-      <svg
-        role="img"
-        aria-label={label}
-        viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-        className="h-auto w-full overflow-visible"
-      >
-        <g className="stroke-trazo" strokeWidth="1">
-          {edges.map(({ key, a, b }) => (
-            <line key={key} x1={a.x} y1={a.y} x2={b.x} y2={b.y} />
+      <div data-network-slot>
+        <svg
+          role="img"
+          aria-label={label}
+          viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+          className="network-static h-auto w-full overflow-visible"
+        >
+          <g className="stroke-trazo" strokeWidth="1">
+            {edges.map(({ key, a, b }) => (
+              <line key={key} x1={a.x} y1={a.y} x2={b.x} y2={b.y} />
+            ))}
+          </g>
+
+          <path
+            d={activePath}
+            fill="none"
+            className="stroke-ambar/30"
+            strokeWidth="1.4"
+            strokeLinejoin="round"
+          />
+          <path
+            d={activePath}
+            pathLength={100}
+            fill="none"
+            className="net-pulse stroke-ambar"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {nodes.map((layer, layerIndex) =>
+            layer.map((point, index) => {
+              const active = ACTIVE[layerIndex] === index;
+              return (
+                <circle
+                  key={`${layerIndex}-${index}`}
+                  cx={point.x}
+                  cy={point.y}
+                  r={active ? 6 : 5}
+                  strokeWidth="1.2"
+                  className={
+                    active
+                      ? "fill-ambar stroke-ambar"
+                      : "fill-tinta stroke-ceniza/50"
+                  }
+                />
+              );
+            }),
+          )}
+
+          {/* Halo de la neurona de salida que gana. */}
+          <circle
+            cx={activePoints[3].x}
+            cy={activePoints[3].y}
+            r="14"
+            fill="none"
+            className="stroke-ambar/35"
+            strokeWidth="1"
+          />
+
+          {LABELS.map((text, layer) => (
+            <text
+              key={text}
+              x={XS[layer]}
+              y={HEIGHT - 12}
+              textAnchor="middle"
+              className="fill-ceniza font-mono text-[12px]"
+            >
+              {text}
+            </text>
           ))}
-        </g>
-
-        <path
-          d={activePath}
-          fill="none"
-          className="stroke-ambar/30"
-          strokeWidth="1.4"
-          strokeLinejoin="round"
-        />
-        <path
-          d={activePath}
-          pathLength={100}
-          fill="none"
-          className="net-pulse stroke-ambar"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-
-        {nodes.map((layer, layerIndex) =>
-          layer.map((point, index) => {
-            const active = ACTIVE[layerIndex] === index;
-            return (
-              <circle
-                key={`${layerIndex}-${index}`}
-                cx={point.x}
-                cy={point.y}
-                r={active ? 6 : 5}
-                strokeWidth="1.2"
-                className={
-                  active
-                    ? "fill-ambar stroke-ambar"
-                    : "fill-tinta stroke-ceniza/50"
-                }
-              />
-            );
-          }),
-        )}
-
-        {/* Halo de la neurona de salida que gana. */}
-        <circle
-          cx={activePoints[3].x}
-          cy={activePoints[3].y}
-          r="14"
-          fill="none"
-          className="stroke-ambar/35"
-          strokeWidth="1"
-        />
-
-        {LABELS.map((text, layer) => (
-          <text
-            key={text}
-            x={XS[layer]}
-            y={HEIGHT - 12}
-            textAnchor="middle"
-            className="fill-ceniza font-mono text-[12px]"
-          >
-            {text}
-          </text>
-        ))}
-      </svg>
-      <figcaption className="mt-3 font-mono text-xs text-ceniza">
+        </svg>
+      </div>
+      <figcaption className="network-caption mt-3 font-mono text-xs text-ceniza">
         {caption}
       </figcaption>
     </figure>

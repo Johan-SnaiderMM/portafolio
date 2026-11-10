@@ -12,12 +12,50 @@ interface ExternalLinkProps {
  * Enlace a otro sitio. La flecha va en línea con el texto (no en un flex) para
  * que, si el texto ocupa dos renglones, la flecha quede pegada al final.
  */
+const ARROW = (
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 12 12"
+    className="ml-1.5 inline-block size-3 align-baseline transition-transform group-hover/link:-translate-y-px group-hover/link:translate-x-px"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.4"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M3 9l6-6M4.5 3H9v4.5" />
+  </svg>
+);
+
 export function ExternalLink({
   href,
   srText,
   children,
   className = "",
 }: ExternalLinkProps) {
+  // La flecha va pegada a la última palabra: si el texto ocupa dos renglones,
+  // nunca queda sola en el segundo.
+  let label: ReactNode;
+  if (typeof children === "string" && children.includes(" ")) {
+    const cut = children.lastIndexOf(" ");
+    label = (
+      <>
+        {children.slice(0, cut)}{" "}
+        <span className="whitespace-nowrap">
+          {children.slice(cut + 1)}
+          {ARROW}
+        </span>
+      </>
+    );
+  } else {
+    label = (
+      <>
+        {children}
+        {ARROW}
+      </>
+    );
+  }
+
   return (
     <a
       href={href}
@@ -25,19 +63,7 @@ export function ExternalLink({
       rel="noopener noreferrer"
       className={`group/link text-hueso underline decoration-trazo decoration-1 underline-offset-[5px] transition-colors hover:text-ambar hover:decoration-ambar ${className}`}
     >
-      {children}
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 12 12"
-        className="ml-1.5 inline-block size-3 align-baseline transition-transform group-hover/link:-translate-y-px group-hover/link:translate-x-px"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M3 9l6-6M4.5 3H9v4.5" />
-      </svg>
+      {label}
       <span className="sr-only"> ({srText})</span>
     </a>
   );

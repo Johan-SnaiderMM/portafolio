@@ -38,7 +38,8 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
         />
       </Section>
 
-      <Section id="contacto" label={dict.nav.contact}>
+      {/* En pantallas angostas la red 3D se enciende debajo del contacto: se le deja sitio. */}
+      <Section id="contacto" label={dict.nav.contact} className="max-lg:pb-80">
         <Panel
           heading={dict.contact.heading}
           text={dict.contact.text}
