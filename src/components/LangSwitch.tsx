@@ -26,7 +26,7 @@ export function LangSwitch({ current, navLabel, switchLabel }: LangSwitchProps) 
                 lang={locale}
                 hrefLang={locale}
                 aria-current={isCurrent ? "true" : undefined}
-                aria-label={isCurrent ? undefined : switchLabel}
+                aria-label={isCurrent ? undefined : `${locale.toUpperCase()}: ${switchLabel}`}
                 className={`px-1 py-2 uppercase transition-colors ${
                   isCurrent ? "text-ambar" : "text-ceniza hover:text-hueso"
                 }`}

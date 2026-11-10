@@ -73,9 +73,33 @@ export function NetworkBackdrop() {
     const onMotionChange = () => (reducedMotion.matches ? stop() : start());
     reducedMotion.addEventListener("change", onMotionChange);
 
-    // Espera a que termine de cargar la página para no competir con el primer pintado.
+    // La escena es decoración y cuesta (en un celular lento, más de un segundo de hilo principal): no se paga hasta que
+    // importa. Arranca con la primera interacción de la persona o, si solo mira, a los 5 s de cargar. `?3d=on` y `?fps`
+    // (pruebas y mediciones) arrancan enseguida.
+    const INTERACTIONS = ["pointerdown", "pointermove", "keydown", "scroll", "touchstart", "wheel"] as const;
+    let idleTimer: number | undefined;
+
+    const removeTriggers = () => {
+      window.clearTimeout(idleTimer);
+      for (const name of INTERACTIONS) window.removeEventListener(name, trigger);
+    };
+    function trigger() {
+      removeTriggers();
+      // En un momento libre del hilo principal, para no estorbar el primer gesto.
+      // Safari no tiene requestIdleCallback: ahí se arranca con un retraso corto.
+      const whenIdle = (window as Window & {
+        requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
+      }).requestIdleCallback;
+      if (whenIdle) whenIdle.call(window, start, { timeout: 1500 });
+      else timer = window.setTimeout(start, 50);
+    }
     const schedule = () => {
-      timer = window.setTimeout(start, 300);
+      if (params.get("3d") === "on" || params.has("fps")) {
+        timer = window.setTimeout(start, 300);
+        return;
+      }
+      for (const name of INTERACTIONS) window.addEventListener(name, trigger, { passive: true, once: true });
+      idleTimer = window.setTimeout(trigger, 5000);
     };
     if (document.readyState === "complete") schedule();
     else window.addEventListener("load", schedule, { once: true });
@@ -83,6 +107,7 @@ export function NetworkBackdrop() {
     return () => {
       disposed = true;
       window.clearTimeout(timer);
+      removeTriggers();
       window.removeEventListener("load", schedule);
       reducedMotion.removeEventListener("change", onMotionChange);
       stop();

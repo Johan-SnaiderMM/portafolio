@@ -9,6 +9,7 @@
 //   BASE         dirección del sitio (por defecto http://localhost:3000)
 //   OUT          carpeta de las capturas (por defecto ./capturas)
 //   CHROME_PATH  ruta del navegador, si no está en un lugar habitual
+//   SIN_INTERACCION=1  no simula el primer movimiento del mouse (la red 3D arranca sola a los 5 s)
 //   GPU=1        usa la tarjeta gráfica real; sin eso, WebGL por software
 //                (SwiftShader), mucho más lento que cualquier GPU: sirve para
 //                probar la alternativa lenta, no para medir cuadros por segundo.
@@ -165,6 +166,12 @@ async function session(extraArgs = []) {
       const loaded = new Promise((resolve) => cdp.on("Page.loadEventFired", resolve));
       await cdp.send("Page.navigate", { url });
       await Promise.race([loaded, sleep(15000)]);
+      // La red 3D arranca con la primera interacción de la persona (o a los 5 s): se simula un movimiento del mouse.
+      // SIN_INTERACCION=1 lo omite, para probar el arranque por tiempo.
+      if (!process.env.SIN_INTERACCION) {
+        await sleep(600);
+        await cdp.send("Input.dispatchMouseEvent", { type: "mouseMoved", x: 4, y: 4 });
+      }
     },
     async run(expression) {
       const r = await cdp.send("Runtime.evaluate", { expression, awaitPromise: true, returnByValue: true });
