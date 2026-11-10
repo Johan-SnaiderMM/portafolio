@@ -23,6 +23,8 @@ npm run dev        # http://localhost:3000
 | `npm run build` / `npm start` | Compilación y servidor de producción |
 | `npm run verificar` | Lint + tipos + pruebas (correrlo antes de cada commit) |
 | `npm test` | Pruebas (Vitest) |
+| `npm run enlaces` | Revisa que todos los enlaces de `src/content/projects.ts` respondan (LinkedIn devuelve 999 a los robots y se acepta) |
+| `npm run portadas [id…]` | Regenera las portadas 1200×630 de `public/projects` desde `scripts/portadas/portada.html` y las capturas de `scripts/portadas/fuentes` |
 
 Requiere Node 24 (el mismo de Vercel).
 
@@ -47,7 +49,9 @@ src/
   i18n/              diccionarios es/en tipados, idioma por defecto y negociación
   lib/network/       lógica pura de la red 3D: diseño, colocación según el scroll, capacidad, control de rendimiento
   proxy.ts           redirige «/» a /es o /en según Accept-Language
-scripts/probar-navegador.mjs  prueba el sitio en Chrome/Edge sin cabeza (capturas, consola, cuadros por segundo)
+scripts/probar-navegador.mjs  prueba el sitio en Chrome/Edge sin cabeza (capturas, consola, cuadros por segundo);
+                     escenarios `demo` (captura cualquier URL) y `guion` (sigue un JSON de pasos: scripts/portadas/guiones)
+scripts/portadas/    plantilla de las portadas, guiones y capturas de origen (demos reales de los proyectos)
 docs/PLAN.md         plan, decisiones y fases
 ```
 
